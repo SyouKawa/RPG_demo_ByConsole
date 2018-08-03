@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 
 namespace Game_VSmode_verTest {
 class Character {
-        public bool turn {
-            get { return this.isAttack; }
-            set { this.isAttack = value; }
-        }
         public int cur_skill_index{get;set;}
 
         //Require input to Init
         public string name = "";
-        public Skill[] skill = new Skill[2];
+        public List<Skill> skill;
         public Career career = Career.INIT;
 
         public int HP = 100;
@@ -23,10 +19,8 @@ class Character {
         public int fear_value = 0;
         public int fatigue_value=0;
         public Dictionary<string,int>Max_Limit=new Dictionary<string, int>();//TO-DO Json init
-        protected bool isAttack = false;
         public bool isDead = false;
         public BuffName cur_buff=BuffName.NULL;
-        //public SpecialEffect se = new SpecialEffect();
 
         public Character(){
             Max_Limit.Add("HP",200);
@@ -41,8 +35,8 @@ class Character {
             cur_skill_index=skill_index;
             
             //cur_change_value: fatigue cur_buff
-            if(skill[skill_index].isMagic) Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.CostMP);
-            else Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.AddFatigueValue);
+            //if(skill[skill_index].isMagic) Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.CostMP);
+            //else Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.AddFatigueValue);
             //TO-DO buff_change (for override)
             
             //hostile_change_value: HP anger fear cur_buff

@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Game_VSmode_verTest{
-    class Item {
-        public string name;
-        public string introduce;
+    class SkillRCC{
     }
 }

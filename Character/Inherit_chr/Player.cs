@@ -9,8 +9,8 @@ class Player : Character {
         public Player(){
             name = "player";
             career = Career.UNEMPLOYED;
-            skill[0] = new Skill("Speak",false,true,0,10,0,20,BuffName.NULL);
-            skill[1] = new Skill("Sing",true,false,18,30,0,40,BuffName.NULL);
+            //skill[0] = new Skill("Speak",false,true,0,10,0,20,BuffName.NULL);
+            //skill[1] = new Skill("Sing",true,false,18,30,0,40,BuffName.NULL);
         }
         //For Input
         public Player(string _name,Career _career,Skill[] _skills){ 
