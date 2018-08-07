@@ -18,7 +18,7 @@ namespace Game_VSmode_verTest{
         Box targetBox;
         Timer timer;
         Player player;
-        DataPanel dataPanel;//count gameover HP,MP show
+        Panel dataPanel;//count gameover HP,MP show
         Random seed=new Random();//random position seed
 
         Point[,] gameMap=new Point[row,column];
@@ -140,53 +140,33 @@ namespace Game_VSmode_verTest{
                 }
             }
         }
-        public void InitBagPanel(){
-            int x_start=activemap_col+1;
-            int y_start=6;
-            int panel_row=6;
-            int panel_col=14;
-            //content-set
-            SetAString(x_start+1,panel_row+1,"    Bag");
-            SetAString(x_start+panel_col/2+1,panel_row+1,"    Box");
-            //bound-set
-            for(int i=x_start;i<x_start+panel_col;i++) gameMap[y_start,i].display="一";
-            for (int i = y_start+1; i < y_start + panel_row; i++) {
-                gameMap[i, x_start].display= "| ";
-                gameMap[i,x_start+panel_col/2].display="| ";
-                gameMap[i, x_start + panel_col - 1].display = "| ";
-            }
-            for (int i=x_start;i<x_start+panel_col;i++) gameMap[y_start+panel_row,i].display="一";
-        }
-        public void DrawBagPanel(string title){//TODO-Create a Class to save the former 4-args 
-            int x_start=activemap_col+1;
-            int y_start=8;
-            int panel_row=10;
-            int panel_col=21;
+        public void DrawPanel(Panel panel){//TODO-Create a Class to save the former 4-args 
             List<string>showdata=new List<string>();//read from JsonFile
             showdata.Add("Ice Storm");
             showdata.Add("Shadow of Gloom");
             showdata.Add("Hit with MagicWand");
             showdata.Add("Curse of BloodMoon");
-            Console.SetCursorPosition(x_start,y_start+1);//last panel +1 line to start 
-            int simple_space_count=(panel_col-title.Length)/2/2;
+            Console.SetCursorPosition(panel.startX,panel.startY);
+            
+            int simple_space_count=(panel.panelCol-panel.title.Length)/2/2;
             string temp_space1=new string('-',simple_space_count);
             string temp_space2=new string(' ',simple_space_count);
-            Console.Write(temp_space1+temp_space2+title+temp_space2+temp_space1);
+            Console.Write(temp_space1+temp_space2+panel.title+temp_space2+temp_space1);
 
-            for(int p_line=y_start+2,data_line=0;p_line<panel_row+y_start;p_line++,data_line++){
-                Console.SetCursorPosition(x_start,p_line);
-                if(p_line!=y_start+panel_row-1) Console.Write("|");//except the last line
+            for(int p_line=panel.startY+1,data_line=0;p_line<panel.startY+panel.panelRow;p_line++,data_line++){
+                Console.SetCursorPosition(panel.startX,p_line);
+                if(p_line!=panel.startY+panel.panelRow-1) Console.Write("|");//except the last line
                 if(data_line<showdata.Count){//still exist content
                     Console.Write(showdata[data_line]);
-                    string left_space=new string(' ',panel_col-showdata[data_line].Length-1);
+                    string left_space=new string(' ',panel.panelCol-showdata[data_line].Length-1);
                     Console.Write(left_space);
                     Console.Write("|");
-                }else if(p_line!=y_start+panel_row-1){//Content over but not the last-line
-                    string left_space=new string(' ',panel_col-1);
+                }else if(p_line!=panel.startY+panel.panelRow-1){//Content over but not the last-line
+                    string left_space=new string(' ',panel.panelCol-1);
                     Console.Write(left_space);
                     Console.Write("|");
-                }else if(p_line==y_start+panel_row-1){
-                    for(int i=panel_col;i>0;i--){
+                }else if(p_line==panel.startY+panel.panelRow-1){
+                    for(int i=panel.panelCol;i>0;i--){
                         Console.Write("-");//the-last-line
                     }
                 }

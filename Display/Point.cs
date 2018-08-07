@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace Game_VSmode_verTest{
     class Point {
         public string display;
-        public Point(){}
+        public Point(){
+            display="  ";
+        }
     }
 }
