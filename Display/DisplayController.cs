@@ -13,73 +13,151 @@ namespace Game_VSmode_verTest{
                 return _instance;
             }
         }
+        public int pointer=-1;
+        public Stack<Panel> panels=new Stack<Panel>();
 
-        public Stack<Panel> panel=new Stack<Panel>();
+        public Object OperateCurPanel(){//for Top(Cur)-element
+            ConsoleKey cur_key=Console.ReadKey(true).Key;
+            switch(cur_key){
+                case ConsoleKey.Escape:
+                    CloseCurPanel();
+                return null;
 
-        public enum PanelMode{
-            Skill,
-            Map,
-            Bag,
-            Menu
+                case ConsoleKey.UpArrow:
+                    if(0==pointer);
+                    else{
+                        pointer--;
+                        RefreshCurPanel();
+                    }
+                return null;
+                
+                case ConsoleKey.DownArrow:
+                    if(pointer==((SkillPanel)panels.Peek()).skills.Count-1);
+                    else pointer++;
+                    RefreshCurPanel();
+                return null;
+                
+                case ConsoleKey.Enter:
+                //HOW-TO-DO? Different Panel return
+                    Object selected=new Skill(((SkillPanel)panels.Peek()).skills[pointer]);
+                    CloseCurPanel();
+                    return selected;
+                case ConsoleKey.Spacebar:
+                    Skill temp_skill=new Skill(((SkillPanel)panels.Peek()).skills[pointer]);
+                    DescripPanel descrpPanel=new DescripPanel(temp_skill.skill_name,20,10,5,33);
+                    descrpPanel.content="Damage:"+temp_skill.damage.ToString()+" Cost:"+temp_skill.cost.ToString();
+                    OpenNewPanel(descrpPanel);
+
+                break;
+            }
+            return null;
         }
 
-        public static void OpenNewPanel(PanelMode panelMode){
-            switch(panelMode){
-                case PanelMode.Skill:
+        public void OpenNewPanel(Panel panel){
+            _instance.panels.Push(panel);
+            switch(_instance.panels.Peek().type){
+                case PanelType.Act:
                 break;
-                case PanelMode.Map:
+                case PanelType.Skill:
+                    DrawSkillPanel(panel);
                 break;
-                case PanelMode.Bag:
+                case PanelType.Map:
                 break;
-                case PanelMode.Menu:
+                case PanelType.Bag:
+                break;
+                case PanelType.Menu:
+                break;
+                case PanelType.Descrp:
+                    DrawDescrpPanel((DescripPanel)panel);
                 break;
             }
         }
-
-        public static void CloseCurPanel(){
-            _instance.panel.Pop();
+        public void RefreshCurPanel(){
+            switch(panels.Peek().type){
+                case PanelType.Act:
+                break;
+                case PanelType.Skill:
+                    DrawSkillPanel(panels.Peek());
+                break;
+                case PanelType.Map:
+                break;
+                case PanelType.Bag:
+                break;
+                case PanelType.Menu:
+                break;
+            }
+        }
+        public void DrawPanel(Panel panel){
+            switch(panel.type){
+                case PanelType.Act:
+                break;
+                case PanelType.Skill:
+                    DrawSkillPanel(panels.Peek());
+                break;
+                case PanelType.Map:
+                break;
+                case PanelType.Bag:
+                break;
+                case PanelType.Menu:
+                break;
+            }
+        }
+        public void CloseCurPanel(){
+            _instance.panels.Pop();
             Console.Clear();
-            foreach(Panel p in _instance.panel){
+            foreach(Panel p in _instance.panels){
                 DrawPanel(p);
             }
         }
 
-        public static void DrawPanel(Panel panel){//TODO-Create a Class to save the former 4-args 
-            List<string>showdata=new List<string>();//read from JsonFile
-            showdata.Add("Ice Storm");
-            showdata.Add("Shadow of Gloom");
-            showdata.Add("Hit with MagicWand");
-            showdata.Add("Curse of BloodMoon");
+        public static void DrawPanelFrame(Panel panel){
+
             Console.SetCursorPosition(panel.startX,panel.startY);
-            
             int simple_space_count=(panel.panelCol-panel.title.Length)/2/2;
             string temp_space1=new string('-',simple_space_count);
             string temp_space2=new string(' ',simple_space_count);
             Console.Write(temp_space1+temp_space2+panel.title+temp_space2+temp_space1);
 
-            for(int p_line=panel.startY+1,data_line=0;p_line<panel.startY+panel.panelRow;p_line++,data_line++){
+            for(int p_line=panel.startY+1;p_line<panel.startY+panel.panelRow;p_line++){
                 Console.SetCursorPosition(panel.startX,p_line);
-                if(p_line!=panel.startY+panel.panelRow-1) Console.Write("|");//except the last line
-                if(data_line<showdata.Count){//still exist content
-
-                    Console.BackgroundColor=ConsoleColor.DarkYellow;
-                    Console.ForegroundColor=ConsoleColor.Black;
-                    Console.Write(showdata[data_line]);
-                    Console.BackgroundColor=ConsoleColor.Black;
-                    Console.ForegroundColor=ConsoleColor.White;
-                    string left_space=new string(' ',panel.panelCol-showdata[data_line].Length-1);
-                    Console.Write(left_space);
+                if(p_line!=panel.startY+panel.panelRow-1){ 
+                    Console.Write("|");//except the last line
+                    string space=new string(' ',panel.panelCol-2);
+                    Console.Write(space);
                     Console.Write("|");
-                }else if(p_line!=panel.startY+panel.panelRow-1){//Content over but not the last-line
-                    string left_space=new string(' ',panel.panelCol-1);
-                    Console.Write(left_space);
-                    Console.Write("|");
-                }else if(p_line==panel.startY+panel.panelRow-1){
+                }
+                else if(p_line==panel.startY+panel.panelRow-1){
                     for(int i=panel.panelCol;i>0;i--){
                         Console.Write("-");//the-last-line
                     }
                 }
             }
         }
+
+        public void DrawSkillPanel(Panel panel) {
+            //DrawFrame
+            DrawPanelFrame(panel);
+            SkillPanel skillPanel = panel as SkillPanel;
+            //DrawContent
+            for (int p_line = skillPanel.startY + 1,data_line=0; p_line < skillPanel.startY+1 + skillPanel.skills.Count; p_line++,data_line++) {
+                Console.SetCursorPosition(panel.startX+1, p_line);// +1: except drawed-left-frame
+                if (data_line < skillPanel.skills.Count) {
+                    if(data_line==pointer){
+                        Console.BackgroundColor=ConsoleColor.Magenta;
+                        Console.ForegroundColor=ConsoleColor.Black;
+                    }
+                    Console.Write(skillPanel.skills[data_line].skill_name);
+                    Console.BackgroundColor=ConsoleColor.Black;
+                    Console.ForegroundColor=ConsoleColor.White;
+                }
+            }
+        }
+        public void DrawDescrpPanel(DescripPanel panel){
+            DrawPanelFrame(panel);
+            //TO-DO wait a return to display
+            Console.SetCursorPosition(panel.startX+1, panel.startY+3);
+            Console.Write(panel.content);
+        }
+
     }
 }

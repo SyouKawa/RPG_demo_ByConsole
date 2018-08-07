@@ -15,9 +15,10 @@ namespace Game_VSmode_verTest{
             //size
         public int panelRow;
         public int panelCol;
+            //Mode
+        public PanelType type;
             //content
             /*in different inherit class*/ 
-
         public Panel(string _title,int _startX,int _startY,int _panelRow,int _panelCol){
             title=_title;
             startX=_startX;//usual: activemapCol+1
