@@ -9,19 +9,45 @@
     }
     enum BuffName
     {
-        NULL,
-        FATIGUE,
-        ANGER,
-        POISONING,
-        BLESSING,
-        FEAR,
+        Normal,
+        Fatigue,
+        Anger,
+        Poisoning,
+        Blessing,
+        Fear,
     }
     enum ChangeValue
     { 
+        Null,
         MinusHP,
         CostMP,
         AddAngerValue,
         AddFatigueValue,
         AddFearValue
+    }
+    enum LoadMode
+    {
+        Null,
+        Skill,
+        Item,
+        Player,
+        Monster
+    }
+    enum PanelType{
+        Null,
+        Skill,
+        Map,
+        Bag,
+        Menu,
+        Act,
+        Descrp
+    }
+    enum ItemType{
+        Null,
+        Consumable,
+        Task,
+        Heal,
+        Material,
+        Equipment
     }
 }

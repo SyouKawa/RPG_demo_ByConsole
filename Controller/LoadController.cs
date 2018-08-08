@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using Game_VSmode_verTest.Tool;
 
-namespace Game_VSmode_verTest.Controller {
-    class LoadManager {
-        private static LoadManager _instance;
-            public static LoadManager Instance{
-                get{
-                    if(_instance==null)_instance=new LoadManager();
-                    return _instance;
-                }
+namespace Game_VSmode_verTest{
+    class LoadController {
+        private static LoadController _instance;
+        public static LoadController Instance{
+            get{
+                if(_instance==null) _instance=new LoadController();
+                return _instance;
             }
-        public void LoadConfig(string file_text){
-            
+        }
+        public List<Skill> GetSkillsConfig(string path){
+            return new LoadManager().GetSkillsConfig(path);
         }
     }
 }

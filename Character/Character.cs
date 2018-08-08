@@ -10,7 +10,7 @@ class Character {
 
         //Require input to Init
         public string name = "";
-        public List<Skill> skill;
+        public List<Skill> skill=new List<Skill>();
         public Career career = Career.INIT;
 
         public int HP = 100;
@@ -19,8 +19,11 @@ class Character {
         public int fear_value = 0;
         public int fatigue_value=0;
         public Dictionary<string,int>Max_Limit=new Dictionary<string, int>();//TO-DO Json init
+        public Dictionary<string,bool>buffDict=new Dictionary<string, bool>();
+        
         public bool isDead = false;
-        public BuffName cur_buff=BuffName.NULL;
+        public Random random=new Random();
+        public float sumDamage;
 
         public Character(){
             Max_Limit.Add("HP",200);
@@ -28,6 +31,13 @@ class Character {
             Max_Limit.Add("anger_value",100);
             Max_Limit.Add("fatigue_value",100);
             Max_Limit.Add("fear_value",150);//de-buff could control
+
+            buffDict.Add("Normal",true);
+            buffDict.Add("Fatigue",false);
+            buffDict.Add("Anger",false);
+            buffDict.Add("Poisoning",false);
+            buffDict.Add("Blessing",false);//Player init to true
+            buffDict.Add("Fear",false);
         }
 
         public virtual void NormalAttack(int skill_index,ref Character hostile_chr) {
@@ -35,7 +45,10 @@ class Character {
             cur_skill_index=skill_index;
             
             //cur_change_value: fatigue cur_buff
-            //if(skill[skill_index].isMagic) Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.CostMP);
+            
+            //TO-DO Skill-RCC
+            //TO-DO Settlement -Damage
+            //if(skill[skill_index]) Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.CostMP);
             //else Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.AddFatigueValue);
             //TO-DO buff_change (for override)
             
@@ -54,6 +67,39 @@ class Character {
             }
              
         }
-        public virtual void ChangeStatus(Character chr) {}
+        public virtual void CheckStatus(){}//self-check
+
+        public virtual void CheckBuff(){
+            if(fatigue_value==Max_Limit["fatigue_value"]){
+                buffDict["Fatigue"]=true;
+            }
+            if(fatigue_value==Max_Limit["fear_value"]){
+                buffDict["Fear"]=true;
+            }
+            if(fatigue_value==Max_Limit["anger_value"]){
+                buffDict["Anger"]=true;
+            }
+            //+ Other Inherit Buff Choices
+        }
+        public virtual void EnterBuff(){
+            if(buffDict["Normal"]){
+                sumDamage=0f;//TO-DO Normal Sum of Damage Formula
+            }
+            if(buffDict["Fatigue"]){
+                sumDamage/=2;
+            }
+            if(buffDict["Fear"]){
+                int tempRate=random.Next(0,10);
+                if(tempRate<=5) sumDamage=0f;
+            }
+            if(buffDict["Anger"]){
+                sumDamage*=1.2f;
+            }
+            if(buffDict["Poisoning"]){
+                HP-=2;//TODO CLK
+            }
+        }
+
+
     }
 }

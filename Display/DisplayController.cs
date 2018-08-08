@@ -39,11 +39,11 @@ namespace Game_VSmode_verTest{
                 
                 case ConsoleKey.Enter:
                 //HOW-TO-DO? Different Panel return
-                    Object selected=new Skill(((SkillPanel)panels.Peek()).skills[pointer]);
+                    Object selected=((SkillPanel)panels.Peek()).skills[pointer];
                     CloseCurPanel();
                     return selected;
                 case ConsoleKey.Spacebar:
-                    Skill temp_skill=new Skill(((SkillPanel)panels.Peek()).skills[pointer]);
+                    Skill temp_skill=((SkillPanel)panels.Peek()).skills[pointer];
                     DescripPanel descrpPanel=new DescripPanel(temp_skill.skill_name,20,10,5,33);
                     descrpPanel.content="Damage:"+temp_skill.damage.ToString()+" Cost:"+temp_skill.cost.ToString();
                     OpenNewPanel(descrpPanel);

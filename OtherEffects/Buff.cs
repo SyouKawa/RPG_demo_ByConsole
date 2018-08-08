@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Game_VSmode_verTest {
 class Buff {
-        static BuffName cur_status = BuffName.NULL;
+        static BuffName cur_status = BuffName.Normal;
 
         static public void AddBuff(Character chr){ 
             //TO-DO

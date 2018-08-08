@@ -29,12 +29,16 @@ class FightScene {
             while (!cur_atk_chr.Get_isDead() && !cur_hostile_chr.Get_isDead()) {
                 if (isYourTurn)
                 {
+                    //TO-DO Display SkillList
+                    //TO-DO Choose a Skill_index
+
                     cur_atk_chr.NormalAttack(0,ref cur_hostile_chr);//TO-DO GetKeyDown re-write param[0]                 
                     isYourTurn=false;
                     Console.WriteLine("{0} was attacked by {1}'s {2}.Lost {3} HP",cur_atk_chr.name,cur_hostile_chr.name,cur_hostile_chr.skill[0].skill_name,cur_hostile_chr.skill[0].damage);
                     System.Threading.Thread.Sleep(1000);
                 }
                 else {
+                    cur_hostile_chr.CheckStatus();
                     cur_hostile_chr.NormalAttack(0,ref cur_atk_chr);
                     Console.WriteLine("{0} was attacked by {1}'s {2}.Lost {3} HP",cur_hostile_chr.name,cur_atk_chr.name,cur_atk_chr.skill[0].skill_name,cur_atk_chr.skill[0].damage);
                     isYourTurn=true;

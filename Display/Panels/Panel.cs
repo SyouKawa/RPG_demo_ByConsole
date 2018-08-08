@@ -26,6 +26,9 @@ namespace Game_VSmode_verTest{
             panelRow=_panelRow;
             panelCol=_panelCol;
         }
+        public virtual void Operate(){
+            
+        }
         
     }
 }
