@@ -14,12 +14,9 @@ namespace Game_VSmode_verTest{
         public Player(){
             name = "player";
             career = Career.UNEMPLOYED;
+            ownSkillID.Add(1001);
+            ownSkillID.Add(1003);
             
-        }
-        public override void NormalAttack(int skill_index, ref Character chr) {
-            base.NormalAttack(skill_index, ref chr);
-            //other code eg.buff
-            //deifferent career control
         }
         public override void CheckBuff() {
             base.CheckBuff();
@@ -27,8 +24,8 @@ namespace Game_VSmode_verTest{
                 buffDict["Blessing"]=true;
             }
         }
-        public override void EnterBuff() {
-            base.EnterBuff();
+        public override void SkillSettlement(ref Skill curSetSkill) {
+            base.SkillSettlement(ref curSetSkill);
             if(buffDict["Blessing"]){
                 //TODO san+10;
                 if(buffDict["Poisoning"]){

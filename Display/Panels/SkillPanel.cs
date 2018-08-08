@@ -19,7 +19,7 @@ namespace Game_VSmode_verTest{
 
         public void InitSkillList(){
             configPath=Environment.CurrentDirectory+"\\Config\\Skill_config.json";
-            skills=new List<Skill>(LoadManager.Instance.GetConfigFromFile(configPath,LoadMode.Skill)as List<Skill>);
+            //skills=new List<Skill>(LoadManager.Instance.GetConfigFromFile(configPath,LoadMode.Skill)as List<Skill>);
         }
     }
 }

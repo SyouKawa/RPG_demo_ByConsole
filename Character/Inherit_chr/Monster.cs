@@ -18,7 +18,11 @@ namespace Game_VSmode_verTest{
         }
         private Status curStatus;
         
-        public Monster(){}
+        public Monster(){
+            name="slem";
+            ownSkillID.Add(1002);
+            ownSkillID.Add(1004);
+        }
         public override void CheckStatus() {
             switch(curStatus){
                 case Status.Null:

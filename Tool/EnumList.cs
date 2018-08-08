@@ -16,7 +16,7 @@
         Blessing,
         Fear,
     }
-    enum ChangeValue
+    enum OperateType
     { 
         Null,
         MinusHP,

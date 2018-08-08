@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Game_VSmode_verTest {
 class Character {
-        public int cur_skill_index{get;set;}
 
         //Require input to Init
         public string name = "";
-        public List<Skill> skill=new List<Skill>();
+        public List<int> ownSkillID=new List<int>();
         public Career career = Career.INIT;
 
         public int HP = 100;
@@ -21,9 +20,9 @@ class Character {
         public Dictionary<string,int>Max_Limit=new Dictionary<string, int>();//TO-DO Json init
         public Dictionary<string,bool>buffDict=new Dictionary<string, bool>();
         
+        public Skill settle_skill_instance;
         public bool isDead = false;
         public Random random=new Random();
-        public float sumDamage;
 
         public Character(){
             Max_Limit.Add("HP",200);
@@ -40,24 +39,6 @@ class Character {
             buffDict.Add("Fear",false);
         }
 
-        public virtual void NormalAttack(int skill_index,ref Character hostile_chr) {
-            
-            cur_skill_index=skill_index;
-            
-            //cur_change_value: fatigue cur_buff
-            
-            //TO-DO Skill-RCC
-            //TO-DO Settlement -Damage
-            //if(skill[skill_index]) Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.CostMP);
-            //else Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.AddFatigueValue);
-            //TO-DO buff_change (for override)
-            
-            //hostile_change_value: HP anger fear cur_buff
-            Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.AddAngerValue);
-            Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.AddFearValue);
-            Calculate.ValueChangedBy(this,hostile_chr,ChangeValue.MinusHP);
-            //TO-DO buff_change (for override)
-        }
         public virtual bool Get_isDead(){
             if(0==HP){ 
                 isDead=true;
@@ -67,7 +48,64 @@ class Character {
             }
              
         }
-        public virtual void CheckStatus(){}//self-check
+
+        public virtual void Attack(int skillID){
+            GetSettleSkillPrototype(skillID);
+            SkillSettlement(ref settle_skill_instance);
+            if(!GetSkillRCC(settle_skill_instance))return;
+            UpdateFightDataPositive(settle_skill_instance);
+        }
+        public virtual void BeHit(int  skillID){
+            GetSettleSkillPrototype(skillID);
+            SkillSettlement(ref settle_skill_instance);
+            UpdateFightDataPassive(settle_skill_instance);
+        }
+
+        #region Skill Release + beHit Implement
+
+        public virtual void GetSettleSkillPrototype(int skillID){
+            settle_skill_instance=GlobalSkillsManager.Instance.GetSkill(skillID);
+        }
+        
+        public virtual bool GetSkillRCC(Skill newskill){
+            return true;
+        }
+
+        public virtual void UpdateFightDataPositive(Skill settleSkill){
+            if(settleSkill.type.isMagic) SetNumVal.SetNumValBy(this,settleSkill,OperateType.CostMP);
+            else SetNumVal.SetNumValBy(this,settleSkill,OperateType.AddFatigueValue);
+        }
+        public virtual void UpdateFightDataPassive(Skill settleSkill){
+            SetNumVal.SetNumValBy(this,settleSkill,OperateType.AddAngerValue);
+            SetNumVal.SetNumValBy(this,settleSkill,OperateType.AddFearValue);
+            SetNumVal.SetNumValBy(this,settleSkill,OperateType.MinusHP);
+        }
+
+        public virtual void SkillSettlement(ref Skill curSetSkill){
+            if(buffDict["Normal"]){
+                curSetSkill.damage+=0;
+            }
+            if(buffDict["Fatigue"]){
+                curSetSkill.damage/=2;
+                curSetSkill.cost+=10;
+            }
+            if(buffDict["Fear"]){
+                int tempRate=random.Next(0,10);
+                if(tempRate<=5){
+                    curSetSkill.cost+=20;
+                    if(tempRate<3){
+                        //TODO-SAN=0 // player cant move when return Map
+                        if(tempRate==1) curSetSkill.damage=0;
+                    }
+                }
+            }
+            if(buffDict["Anger"]){
+                curSetSkill.damage*=2;
+            }
+            if(buffDict["Poisoning"]){
+                HP-=2;//TODO CLK
+            }
+        }
 
         public virtual void CheckBuff(){
             if(fatigue_value==Max_Limit["fatigue_value"]){
@@ -81,25 +119,8 @@ class Character {
             }
             //+ Other Inherit Buff Choices
         }
-        public virtual void EnterBuff(){
-            if(buffDict["Normal"]){
-                sumDamage=0f;//TO-DO Normal Sum of Damage Formula
-            }
-            if(buffDict["Fatigue"]){
-                sumDamage/=2;
-            }
-            if(buffDict["Fear"]){
-                int tempRate=random.Next(0,10);
-                if(tempRate<=5) sumDamage=0f;
-            }
-            if(buffDict["Anger"]){
-                sumDamage*=1.2f;
-            }
-            if(buffDict["Poisoning"]){
-                HP-=2;//TODO CLK
-            }
-        }
+        #endregion
 
-
+        public virtual void CheckStatus(){}//self-check
     }
 }
