@@ -119,7 +119,39 @@ class Character {
             }
             //+ Other Inherit Buff Choices
         }
-        #endregion
+		#endregion
+
+		public string ConvertNum2Pic(int num)
+		{
+			int count = num / 10;
+			string temp_ref = new string('>' , count);
+			return temp_ref;
+		}
+
+		public virtual void PrintData()
+		{
+			int posX = Console.CursorLeft;
+			int posY = Console.CursorTop;
+			Console.WriteLine(name);
+			Console.SetCursorPosition(posX , posY+1);
+			Console.WriteLine("HP:" + ConvertNum2Pic(90));
+			Console.SetCursorPosition(posX, posY+2);
+			Console.WriteLine("MP:" + ConvertNum2Pic(70));
+			Console.SetCursorPosition(posX , posY + 3);
+			Console.WriteLine(career.ToString());
+
+		}
+
+		public virtual List<string> GetChrData()
+		{
+			List<string> list = new List<string>();
+			list.Add(name+"\n");
+			list.Add("HP:" + ConvertNum2Pic(90)+"\n");
+			list.Add("MP:" + ConvertNum2Pic(70)+"\n");
+			list.Add(career.ToString()+"\n");
+
+			return list;
+		}
 
         public virtual void CheckStatus(){}//self-check
     }

@@ -40,6 +40,7 @@
         Bag,
         Menu,
         Act,
+        Fight,
         Descrp
     }
     enum ItemType{

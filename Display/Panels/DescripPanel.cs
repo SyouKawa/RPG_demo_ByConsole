@@ -10,9 +10,10 @@ namespace Game_VSmode_verTest{
         public string content;
         //public string configPath;
 
-        public DescripPanel(string _title,int _startX,int _startY,int _panelRow,int _panelCol)
-        :base(_title,_startX,_startY,_panelRow,_panelCol){
-            type=PanelType.Descrp;
+        public DescripPanel(string _title , Pos _startPos , Size _size)
+		: base(_title , _startPos , _size)
+		{
+			type=PanelType.Descrp;
             content="This is a test description.";
         }
     }

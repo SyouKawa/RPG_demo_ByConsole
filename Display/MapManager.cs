@@ -21,7 +21,7 @@ namespace Game_VSmode_verTest{
         //Panel dataPanel;//count gameover HP,MP show
         Random seed=new Random();//random position seed
 
-        Point[,] gameMap=new Point[row,column];
+        //Point[,] gameMap=new Point[row,column];
 
         StringBuilder mapBuffer=new StringBuilder();
 

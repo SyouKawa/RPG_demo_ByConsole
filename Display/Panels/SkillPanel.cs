@@ -6,20 +6,71 @@ using System.Threading.Tasks;
 
 namespace Game_VSmode_verTest{
     class SkillPanel:Panel{
-        //content
-        public List<Skill> skills;
+		//TODO-Change to read from Maneger.
+
+        public List<Skill> skills;//OSC
         public string configPath;
 
-        public SkillPanel(string _title,int _startX,int _startY,int _panelRow,int _panelCol)
-        :base(_title,_startX,_startY,_panelRow,_panelCol){
+        public SkillPanel(string _title, Pos _startPos , Size _size)
+        :base(_title,_startPos , _size)
+		{
             type=PanelType.Skill;
-            //configPath=_configPath;
             InitSkillList();
         }
 
-        public void InitSkillList(){
+		public override void UpdateOptions()
+		{
+			foreach(OptionObject opt in options)
+			{
+				opt.Draw(pointer);
+			}
+		}
+
+		public override void FillOptionContent()
+		{
+			for (int i=0;i<skills.Count ;i++)
+			{
+				OptionObject tempOption = new OptionObject();
+				tempOption.index = i;
+				tempOption.content.Add(skills[i].skill_name+"\n");
+				tempOption.size = new Size(skills[i].skill_name.Length , 1);
+				//pos:startpos+padding_Axis * index
+				if (!isHorizon)
+				{
+					tempOption.startPos = new Pos(startPos.x+2, startPos.y + tempOption.size.heightRow * i+1);
+				}
+				else
+				{
+					tempOption.startPos = new Pos(startPos.x+2 + tempOption.size.widthCol * i , startPos.y+1);
+				}
+				options.Add(tempOption);
+			}
+		}
+
+		public override void MoveBetweenOptions()
+		{
+			ConsoleKey cur_key = Console.ReadKey(true).Key;
+			switch (cur_key)
+			{
+				case ConsoleKey.UpArrow:
+					if (0 != pointer)
+					{
+						pointer--;
+						UpdateOptions();
+					}
+					break;
+
+				case ConsoleKey.DownArrow:
+					if (pointer >= options.Count-1) ;
+					else pointer++;
+					UpdateOptions();
+					break;
+			}
+		}
+
+		public void InitSkillList(){
             configPath=Environment.CurrentDirectory+"\\Config\\Skill_config.json";
-            //skills=new List<Skill>(LoadManager.Instance.GetConfigFromFile(configPath,LoadMode.Skill)as List<Skill>);
+            skills=new List<Skill>(LoadController.Instance.GetSkillsConfig(configPath)as List<Skill>);
         }
     }
 }
