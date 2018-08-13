@@ -8,7 +8,9 @@ namespace Game_VSmode_verTest{
     class FightPanel:Panel{
 
 		List<Character> chrs;//OSC
-							 //string MonsterPic;
+		string MonsterPic; //string MonsterPic;
+		public Fight fightscene;
+
 		#region InitPart
 		public FightPanel(string _title , Pos _startPos , Size _size)
 		: base(_title , _startPos , _size)
@@ -61,9 +63,9 @@ namespace Game_VSmode_verTest{
 		#endregion
 
 
-		public override void OperateOption()
+		public override ActionRes OperateOption()
 		{
-			if (!isTop) return;
+			if (!isTop) return null;
 			ConsoleKey cur_key = Console.ReadKey(true).Key;
 			switch (cur_key)
 			{
@@ -80,11 +82,17 @@ namespace Game_VSmode_verTest{
 					else pointer++;
 					UpdateOptions();
 					break;
-				case ConsoleKey.K:
+				case ConsoleKey.Enter:
 					ResetOutputStyle();
-					controller.OpenPanel(new SkillPanel("S k i l l " , new Pos(this.options[pointer].startPos.x , this.startPos.y + 5) , new Size(11 , 10)));
+					ActionPanel actionPanel = new ActionPanel("A c t i o n " , new Pos(this.options[pointer].startPos.x , this.startPos.y + 5) , new Size(6 , 5));
+					controller.OpenPanel(actionPanel);
+					break;
+				case ConsoleKey.Escape:
+					ResetOutputStyle();
+					controller.OpenPanel(new GlobalStaticPanel(PanelType.Menu));
 					break;
 			}
+			return null;
 		}
 
 	}

@@ -38,8 +38,9 @@
         Skill,
         Map,
         Bag,
-        Menu,
-        Act,
+        Main,
+		Action,
+		Menu,
         Fight,
         Descrp
     }

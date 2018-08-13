@@ -18,10 +18,19 @@ namespace Game_VSmode_verTest
 			//SkillPanel test = new SkillPanel("S k i l l " , new Pos(10 , 1) , new Size(11 , 10));
 			//test.Draw();
 			FightPanel fightPanel = new FightPanel("F i g h t " , new Pos(4 , 4) , new Size(30 , 30));
+			//GlobalStaticPanel menuPanel =new GlobalStaticPanel(PanelType.Action);
 			//fightPanel.Draw();
 			while (true)
 			{
-				DisplayController.Instance.ControlCurPanel();
+				//ActionRes curAction=DisplayController.Instance.ControlCurPanel();
+				switch (DisplayController.Instance.panels.Peek().type)
+				{
+					case PanelType.Map:
+						break;
+					case PanelType.Fight:
+						((FightPanel)DisplayController.Instance.panels.Peek()).fightscene.RoundBattle();
+						break;
+				}
 			}
             Console.ReadKey();
         }

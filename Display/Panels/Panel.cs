@@ -21,6 +21,18 @@ namespace Game_VSmode_verTest{
 		public int pointer;
 		public bool isTop;
 
+		public Panel()
+		{
+			//Default
+			type = PanelType.Null;
+			options = new List<OptionObject>();
+			pointer = 1;
+			isHorizon = false;
+			isTop = true;
+
+			//Operate Controller
+			controller = DisplayController.Instance;
+		}
 		public Panel(string _title,Pos _startPos,Size _size)
 		{
             title=_title;
@@ -42,7 +54,7 @@ namespace Game_VSmode_verTest{
 		public void Draw()
 		{
 			DrawFrame();
-			FillOptionContent();
+			FillOptionContent();//core
 			UpdateOptions();
 		}
 
@@ -92,7 +104,8 @@ namespace Game_VSmode_verTest{
 		{
 			foreach (OptionObject opt in options)
 			{
-				opt.DrawVertical(pointer);
+				if (isHorizon) opt.DrawHorizon(pointer);
+				else opt.DrawVertical(pointer);
 			}
 		}
 		#endregion
@@ -100,7 +113,15 @@ namespace Game_VSmode_verTest{
 		//merged with OperateOption();
 		//public virtual void MoveBetweenOptions(){}
 
-		public virtual void OperateOption() {}
+		public virtual ActionRes OperateOption()
+		{
+			return null;
+		}
+
+		public virtual ActionRes OptionFunc()
+		{
+			return null;
+		}
 
 		#region OperateOptionAPI
 

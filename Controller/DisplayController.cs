@@ -42,22 +42,31 @@ namespace Game_VSmode_verTest
 			//1.pop top
 			//2. tell the newTopPanel Set isTop;
 			panels.Pop();
-			panels.Peek().isTop = true;
+			if (panels.Count != 0) panels.Peek().isTop = true;
+			else
+			{
+				//merge to Quit-opt
+				//Environment.Exit(0);
+			}
 		}
 
 		public void CloseCurPanel()
 		{
 			PopPanel();
 			Console.Clear();
-			foreach (Panel p in _instance.panels)
+
+			//reverse Draw order,prevent cover.
+			Stack<Panel> tempStack = new Stack<Panel>(panels);
+			tempStack.Reverse();
+			foreach (Panel p in tempStack)
 			{
 				p.Draw();
 			}
 		}
 
-		public void ControlCurPanel()
+		public ActionRes ControlCurPanel()
 		{
-			panels.Peek().OperateOption();
+			return panels.Peek().OperateOption();
 		}
 
 		//public void DrawDescrpPanel(DescripPanel panel)
