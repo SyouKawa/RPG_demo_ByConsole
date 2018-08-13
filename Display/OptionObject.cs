@@ -22,7 +22,7 @@ namespace Game_VSmode_verTest
 			content = _content;
 		}
 
-		public void Draw(int curPointer)
+		public void DrawVertical(int curPointer)
 		{
 			//Move to Correct Position
 			Console.SetCursorPosition(startPos.x , startPos.y);
@@ -53,6 +53,38 @@ namespace Game_VSmode_verTest
 			}
 		}
 
+		public void DrawHorizon(int curPointer)
+		{
+			//Move to Correct Position
+			Console.SetCursorPosition(startPos.x , startPos.y);
 
+			//for content print
+			Pos prePosition = new Pos(Console.CursorLeft , Console.CursorTop);
+			//for background print
+			Pos tempPosition = new Pos(Console.CursorLeft , Console.CursorTop);
+
+			//(Selected)Change Background
+			if (curPointer == index)
+			{
+				Console.BackgroundColor = ConsoleColor.Magenta;
+				for (int line = 0 ; line < content.Count ; line++)//size.heightRow
+				{
+					for (int col = 0 ; col < content[line].Length-1 ; col++)
+					{
+						Console.Write(" ");
+					}
+					Console.SetCursorPosition(tempPosition.x , tempPosition.y+line+1);
+				}
+			}
+
+			//Normal output
+			Console.SetCursorPosition(prePosition.x , prePosition.y);
+			for (int i = 0 ; i < content.Count ; i++)
+			{
+				if(curPointer != index) Console.BackgroundColor = ConsoleColor.Black;
+				Console.Write(content[i]);
+				Console.SetCursorPosition(prePosition.x , prePosition.y + i+1);
+			}
+		}
 	}
 }

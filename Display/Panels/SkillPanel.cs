@@ -22,7 +22,7 @@ namespace Game_VSmode_verTest{
 		{
 			foreach(OptionObject opt in options)
 			{
-				opt.Draw(pointer);
+				opt.DrawVertical(pointer);
 			}
 		}
 
@@ -47,8 +47,9 @@ namespace Game_VSmode_verTest{
 			}
 		}
 
-		public override void MoveBetweenOptions()
+		public override void OperateOption()
 		{
+			if (!isTop) return;
 			ConsoleKey cur_key = Console.ReadKey(true).Key;
 			switch (cur_key)
 			{
@@ -61,9 +62,12 @@ namespace Game_VSmode_verTest{
 					break;
 
 				case ConsoleKey.DownArrow:
-					if (pointer >= options.Count-1) ;
+					if (pointer >= options.Count - 1) ;
 					else pointer++;
 					UpdateOptions();
+					break;
+				case ConsoleKey.Escape:
+					controller.CloseCurPanel();
 					break;
 			}
 		}

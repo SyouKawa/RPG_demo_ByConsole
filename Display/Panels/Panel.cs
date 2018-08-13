@@ -6,13 +6,20 @@ using System.Threading.Tasks;
 
 namespace Game_VSmode_verTest{
     class Panel{
+
+		//Panel using
+		public int ID;
         public string title;
 		public Pos startPos;
 		public Size size;
         public PanelType type;
 		public List<OptionObject> options;
-		public int pointer;
 		public bool isHorizon;
+
+		//Controller using
+		protected DisplayController controller;
+		public int pointer;
+		public bool isTop;
 
 		public Panel(string _title,Pos _startPos,Size _size)
 		{
@@ -23,8 +30,13 @@ namespace Game_VSmode_verTest{
 			//Default
 			type = PanelType.Null;
 			options = new List<OptionObject>();
-			pointer = 2;
+			pointer = 1;
 			isHorizon = false;
+			isTop = true;
+
+			//Operate Controller
+			controller = DisplayController.Instance;
+
         }
 
 		public void Draw()
@@ -33,7 +45,20 @@ namespace Game_VSmode_verTest{
 			FillOptionContent();
 			UpdateOptions();
 		}
+
+		public bool isTopPanel()
+		{
+			return isTop;
+		}
+
 		#region Draw Implement 
+
+		public void ResetOutputStyle()
+		{
+			Console.BackgroundColor = ConsoleColor.Black;
+			Console.ForegroundColor = ConsoleColor.White;
+		}
+
 		public void DrawFrame()
 		{
 			Console.SetCursorPosition(startPos.x + 1 , startPos.y);//panel.startX+1 : prevent the first '-' beyond width
@@ -67,14 +92,24 @@ namespace Game_VSmode_verTest{
 		{
 			foreach (OptionObject opt in options)
 			{
-				opt.Draw(pointer);
+				opt.DrawVertical(pointer);
 			}
 		}
 		#endregion
 
-		public virtual void MoveBetweenOptions() {}
+		//merged with OperateOption();
+		//public virtual void MoveBetweenOptions(){}
 
 		public virtual void OperateOption() {}
+
+		#region OperateOptionAPI
+
+		public void Close()
+		{
+			controller.CloseCurPanel();
+		}
+		
+		#endregion
 
 		public virtual void FillOptionContent() {}
     }

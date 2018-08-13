@@ -13,15 +13,15 @@ namespace Game_VSmode_verTest
 			//FightScene fight_scene=new FightScene(player,slem);
 			//fight_scene.FightOne2One(player,slem);
             Console.CursorVisible = false;
-			Console.OutputEncoding = Encoding.UTF8;
-            //DisplayController.Instance.DrawFightPanel(new FightPanel("F i g h t ", 0, 0, 40,30),new List<Character>());//width=80
-			SkillPanel test=new SkillPanel("S k i l l " ,new Pos(62 , 1) ,new Size(11 , 10));
-			test.Draw();
-			FightPanel fightPanel = new FightPanel("F i g h t " , new Pos(1 , 1) , new Size(60 , 40));
-			fightPanel.Draw();
+			Console.OutputEncoding = Encoding.Default;
+			//DisplayController.Instance.DrawFightPanel(new FightPanel("F i g h t ", 0, 0, 40,30),new List<Character>());//width=80
+			//SkillPanel test = new SkillPanel("S k i l l " , new Pos(10 , 1) , new Size(11 , 10));
+			//test.Draw();
+			FightPanel fightPanel = new FightPanel("F i g h t " , new Pos(4 , 4) , new Size(30 , 30));
+			//fightPanel.Draw();
 			while (true)
 			{
-				fightPanel.MoveBetweenOptions();
+				DisplayController.Instance.ControlCurPanel();
 			}
             Console.ReadKey();
         }
