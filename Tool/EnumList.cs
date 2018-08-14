@@ -59,6 +59,7 @@
 		Box,
 		Item,
 		Monster,
+		Player,
 		NPC,
 		Door,
 		Turn

@@ -82,9 +82,16 @@ namespace Game_VSmode_verTest {
 						case '　':
 							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Null));
 							break;
+						case '□':
+							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Door));
+							break;
 						case '\n':
 							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Turn));
 							break;
+					}
+					if (curLine[j] > 'ァ' && curLine[j] < 'ヶ')
+					{
+						mapBlocks.Add(new Block(pos , curLine[j] , BlockType.NPC));
 					}
 				}
 			}

@@ -21,9 +21,9 @@ namespace Game_VSmode_verTest
 			//default
 			map = new List<Block>();
 			chrBlock = new List<Block>();
-			chrBlock.Add(new Block(new Pos(4 , 9) , '法' , BlockType.NPC));
-			chrBlock.Add(new Block(new Pos(6 , 9) , '战' , BlockType.NPC));
-			chrBlock.Add(new Block(new Pos(8 , 9) , '牧' , BlockType.NPC));
+			chrBlock.Add(new Block(new Pos(4 , 9) , '法' , BlockType.Player));
+			chrBlock.Add(new Block(new Pos(6 , 9) , '战' , BlockType.Player));
+			chrBlock.Add(new Block(new Pos(8 , 9) , '牧' , BlockType.Player));
 			pointer = 0;
 
 			controller.OpenPanel(this);
@@ -47,7 +47,7 @@ namespace Game_VSmode_verTest
 			foreach (Block curchr in chrBlock)
 			{
 				Console.SetCursorPosition(curchr.pos.x , curchr.pos.y);
-				map[Pos2Index(curchr.pos)].type = BlockType.NPC;
+				map[Pos2Index(curchr.pos)].type = BlockType.Player;
 				Console.Write(curchr.style);
 			}
 
@@ -69,7 +69,7 @@ namespace Game_VSmode_verTest
 		public void CheckBlock(Pos nextPos)
 		{
 			int index = (nextPos.y - 1) * 10 + (nextPos.x - 2) / 2;
-			if (map[index].style == '　'&& map[index].type!=BlockType.NPC)
+			if (map[index].style == '　'&& map[index].type!=BlockType.Player)
 			{
 				//change display
 				Console.SetCursorPosition(chrBlock[pointer].pos.x , chrBlock[pointer].pos.y);
@@ -80,7 +80,7 @@ namespace Game_VSmode_verTest
 				//change style
 				map[Pos2Index(chrBlock[pointer].pos)].type = BlockType.Null;//former->null
 				chrBlock[pointer].pos = nextPos;
-				map[Pos2Index(chrBlock[pointer].pos)].type = BlockType.NPC;//latter->NPC
+				map[Pos2Index(chrBlock[pointer].pos)].type = BlockType.Player;//latter->NPC
 			}
 		}
 
