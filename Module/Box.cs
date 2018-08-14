@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Game_VSmode_verTest{
-    class Box:MovableObject{
+    class Box{
         public List<Item> items;
     }
 }

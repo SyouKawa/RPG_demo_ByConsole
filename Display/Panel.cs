@@ -8,7 +8,6 @@ namespace Game_VSmode_verTest{
     class Panel{
 
 		//Panel using
-		public int ID;
         public string title;
 		public Pos startPos;
 		public Size size;

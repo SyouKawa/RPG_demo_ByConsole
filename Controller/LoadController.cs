@@ -14,8 +14,17 @@ namespace Game_VSmode_verTest{
                 return _instance;
             }
         }
+
+		//Json-Data
         public List<Skill> GetSkillsConfig(string path){
             return new LoadManager().GetSkillsConfig(path);
         }
-    }
+
+		//TxT-Data
+		public List<Block> LoadMapData(string path)
+		{
+			return new LoadManager().LoadMapData(path);
+		}
+
+	}
 }

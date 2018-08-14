@@ -36,14 +36,22 @@ namespace Game_VSmode_verTest
 			}
 		}
 
-		public void RoundBattle(int chrInfo,int actionInfo,int attackInfo)
+		public static int actionInfo = -1, attackInfo = -1, chrInfo = -1;
+
+		public void RoundBattle()
 		{
-			int skillID = ((Player)playerTeam[chrInfo]).ownSkillID[attackInfo];
-			SpawnPriority();
+			//SpawnPriority();
 			while (!hostile.Get_isDead())
 			{
 				if (isYourTurn)
 				{
+					//Get 3-Args to release Skill or Item.
+					while (chrInfo == -1)
+					{
+						chrInfo = DisplayController.Instance.ControlCurPanel();
+					}
+					int skillID = playerTeam[chrInfo].ownSkillID[attackInfo];
+
 					if (actionInfo == 0)
 					{
 						playerTeam[chrInfo].Attack(skillID);
@@ -53,6 +61,10 @@ namespace Game_VSmode_verTest
 					{
 						playerTeam[chrInfo].UseItem(skillID);
 						hostile.BeHit(skillID);
+					}
+					if (actionInfo == 2)
+					{
+						//TODO- Escape.
 					}
 					isYourTurn = false;
 				}

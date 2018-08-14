@@ -65,7 +65,7 @@ namespace Game_VSmode_verTest
 					controller.OpenPanel(temp_skill);
 					while (temp_skill.OperateOption() == -1) ;
 					controller.CloseCurPanel();
-					Program.actionInfo = pointer;
+					Fight.actionInfo = pointer;
 					return pointer;
 				case ConsoleKey.Escape:
 					ResetOutputStyle();

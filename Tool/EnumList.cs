@@ -52,4 +52,15 @@
         Material,
         Equipment
     }
+	enum BlockType
+	{
+		Null,
+		Wall,
+		Box,
+		Item,
+		Monster,
+		NPC,
+		Door,
+		Turn
+	}
 }

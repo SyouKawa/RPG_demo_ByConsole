@@ -54,6 +54,43 @@ namespace Game_VSmode_verTest {
             int _acc_opposite_anger = (int)skill_config_data["acc_opposite_anger"];
             return new Skill(_skillID, _skill_name, temp_type_ref, _cost, _damage, _acc_opposite_fear, _acc_opposite_anger);
         }
-        #endregion
-    }
+		#endregion
+
+		#region LoadMapData Part
+
+		public List<Block> LoadMapData(string path)
+		{
+			string[] mapData = File.ReadAllLines(path);
+			List<Block> mapBlocks = new List<Block>();
+			for (int i = 0 ; i < mapData.Length;i++)
+			{
+				char[] curLine = mapData[i].ToCharArray();
+				for (int j=0;j<curLine.Length;j++)
+				{
+					Pos pos = new Pos((j*2+2) , i+1);// RowCol->X,Y
+					switch (curLine[j])
+					{
+						case '■':
+							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Wall));
+							break;
+						case '★':
+							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Door));
+							break;
+						case '▲':
+							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Box));
+							break;
+						case '　':
+							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Null));
+							break;
+						case '\n':
+							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Turn));
+							break;
+					}
+				}
+			}
+			return mapBlocks;
+		}
+		
+		#endregion
+	}
 }

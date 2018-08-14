@@ -70,7 +70,7 @@ namespace Game_VSmode_verTest{
 					break;
 				case ConsoleKey.Enter:
 					controller.CloseCurPanel();
-					Program.attackInfo = pointer;
+					Fight.attackInfo = pointer;
 					return pointer;
 			}
 			return -1;

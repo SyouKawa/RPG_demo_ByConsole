@@ -92,7 +92,7 @@ namespace Game_VSmode_verTest{
 					ActionPanel temp_actionPanel = new ActionPanel("A c t i o n " , new Pos(this.options[pointer].startPos.x , this.startPos.y + 5) , new Size(6 , 5));
 					controller.OpenPanel(temp_actionPanel);
 					while (temp_actionPanel.OperateOption() == -1) ;
-					Program.chrInfo = pointer;
+					Fight.chrInfo = pointer;
 					return pointer;
 					//break;
 				case ConsoleKey.Escape:
