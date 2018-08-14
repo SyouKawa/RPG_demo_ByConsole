@@ -47,9 +47,9 @@ namespace Game_VSmode_verTest{
 			}
 		}
 
-		public override ActionRes OperateOption()
+		public override int OperateOption()
 		{
-			if (!isTop) return null;
+			if (!isTop) return -1;
 			ConsoleKey cur_key = Console.ReadKey(true).Key;
 			switch (cur_key)
 			{
@@ -60,7 +60,6 @@ namespace Game_VSmode_verTest{
 						UpdateOptions();
 					}
 					break;
-
 				case ConsoleKey.DownArrow:
 					if (pointer >= options.Count - 1) ;
 					else pointer++;
@@ -70,21 +69,23 @@ namespace Game_VSmode_verTest{
 					controller.CloseCurPanel();
 					break;
 				case ConsoleKey.Enter:
-					return OptionFunc();
+					controller.CloseCurPanel();
+					Program.attackInfo = pointer;
+					return pointer;
 			}
-			return null;
+			return -1;
 		}
 
-		public override ActionRes OptionFunc()
-		{
-			switch (pointer)
-			{
-				case 0:
-					return new ActionRes(skills[pointer].skillID , LoadMode.Skill);
+		//public override int OptionFunc()
+		//{
+		//	switch (pointer)
+		//	{
+		//		case 0:
+		//			return pointer;
 					
-			}
-			return null;
-		}
+		//	}
+		//	return -1;
+		//}
 		public void InitSkillList(){
             configPath=Environment.CurrentDirectory+"\\Config\\Skill_config.json";
             skills=new List<Skill>(LoadController.Instance.GetSkillsConfig(configPath)as List<Skill>);

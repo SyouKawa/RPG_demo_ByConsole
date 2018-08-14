@@ -60,6 +60,10 @@ class Character {
             SkillSettlement(ref settle_skill_instance);
             UpdateFightDataPassive(settle_skill_instance);
         }
+		public virtual void UseItem(int itemID)
+		{
+
+		}
 
         #region Skill Release + beHit Implement
 

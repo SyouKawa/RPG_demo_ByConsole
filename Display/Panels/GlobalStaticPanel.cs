@@ -83,9 +83,9 @@ namespace Game_VSmode_verTest
 
 		}
 
-		public override void OperateOption()
+		public override int OperateOption()
 		{
-			if (!isTop) return;
+			if (!isTop) return -1;
 			ConsoleKey curKey = Console.ReadKey(true).Key;
 			switch (curKey)
 			{
@@ -109,9 +109,10 @@ namespace Game_VSmode_verTest
 					OptionFunc();//3-kinds
 					break;
 			}
+			return -1;
 		}
 
-		public override void OptionFunc()
+		public override int OptionFunc()
 		{
 			switch (type)
 			{
@@ -122,6 +123,7 @@ namespace Game_VSmode_verTest
 					MenuOptionFunc();
 					break;
 			}
+			return -1;
 		}
 		#region OptionFunc()-> Menu,Main,Action Implement
 		public void MenuOptionFunc()

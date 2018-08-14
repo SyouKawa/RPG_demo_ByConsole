@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Game_VSmode_verTest{
     class FightPanel:Panel{
 
-		List<Character> chrs;//OSC
+		//List<Character> chrs;//OSC
 		string MonsterPic; //string MonsterPic;
 		public Fight fightscene;
 
@@ -16,19 +16,24 @@ namespace Game_VSmode_verTest{
 		: base(_title , _startPos , _size)
 		{
 			type=PanelType.Fight;
-            InitCharacterList();
+            //InitCharacterList();
 			isHorizon = true;
 
+			//default
+			fightscene = new Fight();
+			InitCharacterList();
+			fightscene.hostile = new Monster();
+			fightscene.fightPanel = this;
+
 			controller.OpenPanel(this);
-        }
+		}
 
 		public void InitCharacterList()
 		{
-			chrs = new List<Character>();
 			Player p1 = new Player();
-			chrs.Add(p1);
-			chrs.Add(p1);
-			chrs.Add(p1);
+			fightscene.playerTeam.Add(p1);
+			fightscene.playerTeam.Add(p1);
+			fightscene.playerTeam.Add(p1);
 		}
 		#endregion
 
@@ -43,11 +48,11 @@ namespace Game_VSmode_verTest{
 
 		public override void FillOptionContent()
 		{
-			for (int i=0;i<chrs.Count ;i++ )
+			for (int i=0;i< fightscene.playerTeam.Count ;i++ )
 			{
 				OptionObject tempOption = new OptionObject();
 				tempOption.index = i;
-				tempOption.content=chrs[i].GetChrData();
+				tempOption.content= fightscene.playerTeam[i].GetChrData();
 				tempOption.size = new Size(13 , 11);
 				if (!isHorizon)
 				{
@@ -63,9 +68,9 @@ namespace Game_VSmode_verTest{
 		#endregion
 
 
-		public override ActionRes OperateOption()
+		public override int OperateOption()
 		{
-			if (!isTop) return null;
+			if (!isTop) return -1;
 			ConsoleKey cur_key = Console.ReadKey(true).Key;
 			switch (cur_key)
 			{
@@ -84,15 +89,18 @@ namespace Game_VSmode_verTest{
 					break;
 				case ConsoleKey.Enter:
 					ResetOutputStyle();
-					ActionPanel actionPanel = new ActionPanel("A c t i o n " , new Pos(this.options[pointer].startPos.x , this.startPos.y + 5) , new Size(6 , 5));
-					controller.OpenPanel(actionPanel);
-					break;
+					ActionPanel temp_actionPanel = new ActionPanel("A c t i o n " , new Pos(this.options[pointer].startPos.x , this.startPos.y + 5) , new Size(6 , 5));
+					controller.OpenPanel(temp_actionPanel);
+					while (temp_actionPanel.OperateOption() == -1) ;
+					Program.chrInfo = pointer;
+					return pointer;
+					//break;
 				case ConsoleKey.Escape:
 					ResetOutputStyle();
 					controller.OpenPanel(new GlobalStaticPanel(PanelType.Menu));
 					break;
 			}
-			return null;
+			return -1;
 		}
 
 	}

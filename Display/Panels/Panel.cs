@@ -113,14 +113,14 @@ namespace Game_VSmode_verTest{
 		//merged with OperateOption();
 		//public virtual void MoveBetweenOptions(){}
 
-		public virtual ActionRes OperateOption()
+		public virtual int OperateOption()
 		{
-			return null;
+			return -1;
 		}
 
-		public virtual ActionRes OptionFunc()
+		public virtual int OptionFunc()
 		{
-			return null;
+			return -1;
 		}
 
 		#region OperateOptionAPI

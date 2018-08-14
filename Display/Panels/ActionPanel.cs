@@ -41,9 +41,9 @@ namespace Game_VSmode_verTest
 			}
 		}
 
-		public override void OperateOption()
+		public override int OperateOption()
 		{
-			if (!isTop) return;
+			if (!isTop) return -1;
 			ConsoleKey cur_key = Console.ReadKey(true).Key;
 			switch (cur_key)
 			{
@@ -61,23 +61,32 @@ namespace Game_VSmode_verTest
 					break;
 				case ConsoleKey.Enter:
 					ResetOutputStyle();
-					OptionFunc();
-					break;
+					SkillPanel temp_skill = new SkillPanel("S k i l l " , new Pos(options[pointer].startPos.x , startPos.y + 5) , new Size(11 , 10));
+					controller.OpenPanel(temp_skill);
+					while (temp_skill.OperateOption() == -1) ;
+					controller.CloseCurPanel();
+					Program.actionInfo = pointer;
+					return pointer;
 				case ConsoleKey.Escape:
 					ResetOutputStyle();
 					controller.CloseCurPanel();
 					break;
 			}
+			return -1;
 		}
 
-		public override void OptionFunc()
+		public override int OptionFunc()
 		{
 			switch (pointer)
 			{
 				case 0:
-					controller.OpenPanel(new SkillPanel("S k i l l " , new Pos(this.options[pointer].startPos.x , this.startPos.y + 5) , new Size(11 , 10)));
-					break;
+					SkillPanel temp_skill=new SkillPanel("S k i l l " , new Pos(options[pointer].startPos.x , startPos.y + 5) , new Size(11 , 10));
+					controller.OpenPanel(temp_skill);
+					while (temp_skill.OperateOption() == -1) ;
+					controller.CloseCurPanel();
+					return temp_skill.OperateOption();
 			}
+			return -1;
 		}
 	}
 }

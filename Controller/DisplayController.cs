@@ -64,7 +64,7 @@ namespace Game_VSmode_verTest
 			}
 		}
 
-		public ActionRes ControlCurPanel()
+		public int ControlCurPanel()
 		{
 			return panels.Peek().OperateOption();
 		}

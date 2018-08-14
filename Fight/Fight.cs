@@ -9,15 +9,16 @@ namespace Game_VSmode_verTest
 	class Fight
 	{
 		//Inter-Data
-		public List<Character> playerTeam;
-		public Character hostile;
-		public ActionRes actionRes;
+		public List<Character> playerTeam=new List<Character>();
+		public Character hostile = new Character();
+		//public ActionRes actionRes;
 		public List<string> Log;
 		//Control
 		bool isYourTurn = true;
 		//Inter-FightPanel
-		FightPanel fightPanel;
+		public FightPanel fightPanel;//init in FightPanel
 
+		public Fight() {}
 		public Fight(Character _hostile,List<Character> _playerTeam)
 		{
 			hostile = _hostile;
@@ -25,7 +26,7 @@ namespace Game_VSmode_verTest
 
 			//default
 			Log = new List<string>();
-			actionRes = new ActionRes(-1,LoadMode.Null);
+			//actionRes = new ActionRes(-1,LoadMode.Null);
 			foreach (Panel panel in DisplayController.Instance.panels)
 			{
 				if (panel.type == PanelType.Fight)
@@ -35,21 +36,24 @@ namespace Game_VSmode_verTest
 			}
 		}
 
-		public void RoundBattle()
+		public void RoundBattle(int chrInfo,int actionInfo,int attackInfo)
 		{
+			int skillID = ((Player)playerTeam[chrInfo]).ownSkillID[attackInfo];
 			SpawnPriority();
 			while (!hostile.Get_isDead())
 			{
 				if (isYourTurn)
 				{
-					//GetInput from FightPanel
-					ActionRes actionInfo = null;
-					while (actionInfo==null)
+					if (actionInfo == 0)
 					{
-						actionInfo= DisplayController.Instance.ControlCurPanel();
+						playerTeam[chrInfo].Attack(skillID);
+						hostile.BeHit(skillID);
 					}
-					playerTeam[actionInfo.teamIndex].Attack(actionInfo.resID);
-					hostile.BeHit(actionInfo.resID);
+					if (actionInfo == 1)
+					{
+						playerTeam[chrInfo].UseItem(skillID);
+						hostile.BeHit(skillID);
+					}
 					isYourTurn = false;
 				}
 				else

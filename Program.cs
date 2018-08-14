@@ -7,7 +7,8 @@ namespace Game_VSmode_verTest
 {
     class Program
     {
-        static void Main(string[] args){
+		public static int actionInfo = -1, attackInfo = -1, chrInfo = -1;
+		static void Main(string[] args){
 			//Player player = new Player();
 			//Monster slem = new Monster();
 			//FightScene fight_scene=new FightScene(player,slem);
@@ -28,11 +29,18 @@ namespace Game_VSmode_verTest
 					case PanelType.Map:
 						break;
 					case PanelType.Fight:
-						((FightPanel)DisplayController.Instance.panels.Peek()).fightscene.RoundBattle();
+						while (chrInfo == -1)
+						{
+							chrInfo = DisplayController.Instance.ControlCurPanel();
+						}
+						if (actionInfo != -1 && attackInfo != -1 && chrInfo != -1)
+						{
+							((FightPanel)(DisplayController.Instance.panels.Peek())).fightscene.RoundBattle(chrInfo,actionInfo,attackInfo);
+						}
 						break;
 				}
 			}
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }
