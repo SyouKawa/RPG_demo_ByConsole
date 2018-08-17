@@ -17,8 +17,12 @@ namespace Game_VSmode_verTest
 			DisplayController.Instance.OpenPanel(new MapPanel("M a p " , new Pos(0 , 0) , new Size(30 , 30)));
 			while (true)
 			{
-				DisplayController.Instance.OnlyDrawTopPanel();
 				DisplayController.Instance.ControlCurPanel();
+				if (DisplayController.Instance.panels.Peek().type == PanelType.Fight)
+				{
+					FightPanel curFight = (FightPanel)(DisplayController.Instance.panels.Peek());
+					curFight.fightscene.RoundBattle();
+				}
 			}
         }
     }

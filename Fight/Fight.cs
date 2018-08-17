@@ -46,14 +46,12 @@ namespace Game_VSmode_verTest
 				if (isYourTurn)
 				{
 					//Get 3-Args to release Skill or Item.
-					Console.BackgroundColor = ConsoleColor.Black;
-					fightPanel.logPanel.DrawFrame();
-					fightPanel.logPanel.DisplayLog();
+					RefreshLogPanel();
 					while (chrInfo == -1)
 					{
 						chrInfo = DisplayController.Instance.ControlCurPanel();
 					}
-
+					if (DisplayController.Instance.panels.Peek().type != PanelType.Fight) return;
 					//Settlement
 					int skillID = playerTeam[chrInfo].ownSkillID[attackInfo];
 					if (actionInfo == 0)
@@ -62,10 +60,13 @@ namespace Game_VSmode_verTest
 						GlobalSkillsManager.Instance.AddSpecialEffectPositive(SettleTempskill.skillID , playerTeam , hostile);
 						fightPanel.logPanel.AddLog(SettleTempskill.descrp+'('+ SettleTempskill.info+')');
 						fightPanel.logPanel.DisplayLog();
+						RefreshLogPanel();
+
 						hostile.BeHit(SettleTempskill);
 						GlobalSkillsManager.Instance.AddSpecialEffectPassive(SettleTempskill.skillID , playerTeam , hostile);
 						fightPanel.logPanel.AddLog("this is a log.");
 						fightPanel.logPanel.DisplayLog();
+						RefreshLogPanel();
 					}
 					if (actionInfo == 1)
 					{
@@ -94,6 +95,13 @@ namespace Game_VSmode_verTest
 		{
 			if (hostile.HP > playerTeam[0].HP) isYourTurn = false;
 			else isYourTurn = true;
+		}
+
+		private void RefreshLogPanel()
+		{
+			Console.BackgroundColor = ConsoleColor.Black;
+			fightPanel.logPanel.DrawFrame();
+			fightPanel.logPanel.DisplayLog();
 		}
 
 		#endregion

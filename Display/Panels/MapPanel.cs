@@ -10,26 +10,39 @@ namespace Game_VSmode_verTest
 	{
 		public List<Block> map;//replace OptionObject to Block
 		public List<Block> chrBlock;
-		public Dictionary<int , List<Player>> teamDict;//int ->pointer.
+		public List<Block> npcSaveData;
+		public Dictionary<int , List<Block>> teamDict;//int ->pointer.
 		public string configPath;
+		public bool isRuning;//prevent running-update refreshed by txt
 
 		public MapPanel(string _title , Pos _startPos , Size _size)
 		: base(_title , _startPos , _size)
 		{
 			type = PanelType.Map;
 			isHorizon = true;
-
+			isRuning = false;
 			//default add Player
 			map = new List<Block>();
 			chrBlock = new List<Block>();
-			chrBlock.Add(new Block(new Pos(4 , 9) , '法' , BlockType.Player));
-			chrBlock.Add(new Block(new Pos(6 , 9) , '战' , BlockType.Player));
-			chrBlock.Add(new Block(new Pos(8 , 9) , '牧' , BlockType.Player));
+			chrBlock.Add(new Block(new Pos(4 , 9) , '术' , BlockType.Player));
+			chrBlock[0].npc = new Player();
+			chrBlock.Add(new Block(new Pos(6 , 9) , '匠' , BlockType.Player));
+			chrBlock[1].npc = new Player(1);
+
 			pointer = 0;
 
-			//default add NPCs(Block)
+			//default init player's teamlist
+			teamDict = new Dictionary<int , List<Block>>();
+			for (int i=0 ;i<chrBlock.Count ;i++ )
+			{
+				List<Block> newlist = new List<Block>();
+				teamDict.Add(i , newlist);
+				newlist.Add(chrBlock[i]);//add self.
+			}
 
-			//controller.OpenPanel(this);
+			//default add NPCs(Block)
+			npcSaveData = new List<Block>();
+			//in InitBlockList();
 		}
 
 		public override void FillOptionContent()
@@ -65,8 +78,20 @@ namespace Game_VSmode_verTest
 
 		public void InitBlockList()
 		{
-			configPath = Environment.CurrentDirectory + "\\Config\\map001.txt";
-			map = LoadController.Instance.LoadMapData(configPath);
+			if (!isRuning)
+			{
+				configPath = Environment.CurrentDirectory + "\\Config\\map001.txt";
+				map = LoadController.Instance.LoadMapData(configPath);
+				foreach (Block curBlock in map)
+				{
+					if (curBlock.type == BlockType.NPC)
+					{
+						npcSaveData.Add(new Block(curBlock));
+					}
+				}
+			}
+			isRuning = true;
+
 		}
 
 		public void CheckBlock(Pos nextPos)
@@ -109,9 +134,27 @@ namespace Game_VSmode_verTest
 				ConsoleKey cur_key = Console.ReadKey(true).Key;
 				if (cur_key == ConsoleKey.Enter)
 				{
-					//Create a MessagePanel with current Player-info
-					DescripPanel Info= new DescripPanel("I n f o " , new Pos(10 , 10) , new Size( 10, 4),map[index].npc.name+"加入了队伍");
-					controller.OpenPanel(Info);
+					if (teamDict[pointer].Count < 3)
+					{
+						//Create a MessagePanel with current Player-info
+						DescripPanel Info = new DescripPanel("I n f o " , new Pos(10 , 10) , new Size(10 , 4) , map[index].npc.name + "加入了队伍");
+						controller.OpenPanel(Info);
+						//updata team-info
+						teamDict[pointer].Add(new Block(map[index]));
+
+						//update block-info
+						map[index].style = '　';
+						map[index].type = BlockType.Null;
+						map[index].npc = null;
+
+						UpdateOptions();
+						controller.OnlyDrawTopPanel();
+					}
+					else
+					{
+						DescripPanel Info = new DescripPanel("I n f o " , new Pos(10 , 10) , new Size(10 , 4) ,"队伍已满");
+						controller.OpenPanel(Info);
+					}
 				}
 			}
 		}
@@ -134,7 +177,7 @@ namespace Game_VSmode_verTest
 					}
 					break;
 				case ConsoleKey.T:
-
+					controller.OpenPanel(new TeamPanel("T e a m " , new Pos(10 , 10) , new Size(23 , 6) , this));
 					break;
 				case ConsoleKey.W:
 					Pos posW = new Pos(chrBlock[pointer].pos.x, chrBlock[pointer].pos.y-1);

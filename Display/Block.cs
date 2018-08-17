@@ -24,6 +24,17 @@ namespace Game_VSmode_verTest
 			style = _style;
 			type = _type;
 		}
+		public Block(Block block)
+		{
+			pos = block.pos;
+			style = block.style;
+			type = block.type;
+
+			//DONT use ref ,use new(TODO)
+			npc = new Player();
+			item = block.item;
+			box = block.box;
+		}
 
 		public void PickItem()
 		{

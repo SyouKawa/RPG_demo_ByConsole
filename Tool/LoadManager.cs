@@ -150,6 +150,7 @@ namespace Game_VSmode_verTest {
 					{
 						tempCreateBlock = new Block(pos , curLine[j] , BlockType.NPC);
 						mapBlocks.Add(tempCreateBlock);
+						//TODO Roll a NPC from Manager.
 						tempCreateBlock.npc = new Player();
 					}
 				}

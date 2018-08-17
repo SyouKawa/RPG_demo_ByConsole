@@ -11,7 +11,7 @@ namespace Game_VSmode_verTest{
 		//int exp;
 		public List<Item> items;
 
-		public Player(int a){
+		public Player(){
             name = "魔术师";
             career = Career.UNEMPLOYED;
             ownSkillID.Add(1001);
@@ -20,7 +20,7 @@ namespace Game_VSmode_verTest{
             ownSkillID.Add(1004);
             
         }
-		public Player()
+		public Player(int a)
 		{
 			name = "钟表匠";
 			career = Career.UNEMPLOYED;

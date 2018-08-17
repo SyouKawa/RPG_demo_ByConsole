@@ -57,6 +57,12 @@ namespace Game_VSmode_verTest{
 			}
 
 		}
+
+		public override void Draw()
+		{
+			base.Draw();
+			logPanel.Draw();
+		}
 		#endregion
 
 
