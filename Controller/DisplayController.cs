@@ -54,7 +54,7 @@ namespace Game_VSmode_verTest
 		{
 			PopPanel();
 			Console.Clear();
-
+			Console.BackgroundColor = ConsoleColor.Black;
 			//reverse Draw order,prevent cover.
 			Stack<Panel> tempStack = new Stack<Panel>(panels);
 			tempStack.Reverse();

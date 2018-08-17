@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace Game_VSmode_verTest{
     class DescripPanel:Panel{
         //content
-        public string content;
+        public string shortContent;
         //public string configPath;
 
         public DescripPanel(string _title , Pos _startPos , Size _size)
 		: base(_title , _startPos , _size)
 		{
 			type=PanelType.Descrp;
-            content="This is a test description.";
+            shortContent="This is a test description.";
         }
     }
 }

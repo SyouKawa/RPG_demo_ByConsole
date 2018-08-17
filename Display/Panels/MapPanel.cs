@@ -10,6 +10,7 @@ namespace Game_VSmode_verTest
 	{
 		public List<Block> map;//replace OptionObject to Block
 		public List<Block> chrBlock;
+		public Dictionary<int , List<Player>> teamDict;//int ->pointer.
 		public string configPath;
 
 		public MapPanel(string _title , Pos _startPos , Size _size)
@@ -18,13 +19,15 @@ namespace Game_VSmode_verTest
 			type = PanelType.Map;
 			isHorizon = true;
 
-			//default
+			//default add Player
 			map = new List<Block>();
 			chrBlock = new List<Block>();
 			chrBlock.Add(new Block(new Pos(4 , 9) , '法' , BlockType.Player));
 			chrBlock.Add(new Block(new Pos(6 , 9) , '战' , BlockType.Player));
 			chrBlock.Add(new Block(new Pos(8 , 9) , '牧' , BlockType.Player));
 			pointer = 0;
+
+			//default add NPCs(Block)
 
 			controller.OpenPanel(this);
 		}
@@ -52,12 +55,12 @@ namespace Game_VSmode_verTest
 			}
 
 			//check-loop
-			while(true) CharacterMove();
+			//while(controller.panels.Peek()==this) ControlCheck();
 		}
 
 		public int Pos2Index(Pos pos)
 		{
-			return (pos.y - 1) * 10 + (pos.x - 2) / 2;
+			return (pos.y - 1) * 10 + (pos.x-2 ) / 2;
 		}
 
 		public void InitBlockList()
@@ -68,7 +71,8 @@ namespace Game_VSmode_verTest
 
 		public void CheckBlock(Pos nextPos)
 		{
-			int index = (nextPos.y - 1) * 10 + (nextPos.x - 2) / 2;
+			int index = (nextPos.y - 1) * 10 + (nextPos.x-2) / 2;
+			//kinds of Block Check and effect.
 			if (map[index].style == '　'&& map[index].type!=BlockType.Player)
 			{
 				//change display
@@ -82,9 +86,27 @@ namespace Game_VSmode_verTest
 				chrBlock[pointer].pos = nextPos;
 				map[Pos2Index(chrBlock[pointer].pos)].type = BlockType.Player;//latter->NPC
 			}
+			if (map[index].style == '▲')
+			{
+				//controller.OpenPanel()
+			}
+			if (map[index].style == '⊙')
+			{
+				ConsoleKey cur_key = Console.ReadKey(true).Key;
+				if (cur_key == ConsoleKey.Enter)
+				{
+					//Create a FightPanel with current Player-info
+					Fight curFight = new Fight();
+					{
+						curFight.playerTeam.Add(new Player());
+						curFight.playerTeam.Add(new Player(1));//TODO NPC in team.
+					}
+					controller.OpenPanel(new FightPanel("F i g h t " , new Pos(0 , 0) , new Size(45 , 30) , curFight));
+				}
+			}
 		}
 
-		public void CharacterMove()
+		public void ControlCheck()
 		{
 			if (!isTop) return;
 			ConsoleKey cur_key = Console.ReadKey(true).Key;
@@ -101,21 +123,40 @@ namespace Game_VSmode_verTest
 						pointer = 0;
 					}
 					break;
+				case ConsoleKey.T:
+
+					break;
 				case ConsoleKey.W:
 					Pos posW = new Pos(chrBlock[pointer].pos.x, chrBlock[pointer].pos.y-1);
 					CheckBlock(posW);
+					Console.SetCursorPosition(80 , 3);
+					Console.Write(chrBlock[pointer].pos.x.ToString() + "," + chrBlock[pointer].pos.y.ToString() + "  ");
+					foreach (Block i in map)
+					{
+						if (i.style == '★')
+						{
+							Console.SetCursorPosition(80 , 4);
+							Console.Write(i.pos.x.ToString()+"," + i.pos.y.ToString());
+						}
+					}
 					break;
 				case ConsoleKey.S:
 					Pos posS = new Pos(chrBlock[pointer].pos.x , chrBlock[pointer].pos.y + 1);
 					CheckBlock(posS);
+					Console.SetCursorPosition(80 , 3);
+					Console.Write(chrBlock[pointer].pos.x.ToString() + "," + chrBlock[pointer].pos.y.ToString()+"  ");
 					break;
 				case ConsoleKey.A:
 					Pos posA = new Pos(chrBlock[pointer].pos.x - 2 , chrBlock[pointer].pos.y);
 					CheckBlock(posA);
+					Console.SetCursorPosition(80 , 3);
+					Console.Write(chrBlock[pointer].pos.x.ToString() + "," + chrBlock[pointer].pos.y.ToString() + "  ");
 					break;
 				case ConsoleKey.D:
 					Pos posD = new Pos(chrBlock[pointer].pos.x + 2 , chrBlock[pointer].pos.y);
 					CheckBlock(posD);
+					Console.SetCursorPosition(80 , 3);
+					Console.Write(chrBlock[pointer].pos.x.ToString() + "," + chrBlock[pointer].pos.y.ToString() + "  ");
 					break;
 			}
 		}

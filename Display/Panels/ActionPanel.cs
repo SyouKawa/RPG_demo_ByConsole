@@ -9,16 +9,17 @@ namespace Game_VSmode_verTest
 	class ActionPanel:Panel
 	{
 		public List<string> menuOpt;//OSC
-
-		public ActionPanel(string _title , Pos _startPos , Size _size)
+		public Player bridgePlayer;
+		public ActionPanel(string _title , Pos _startPos , Size _size,Player player)
 		: base(_title , _startPos , _size)
 		{
+			bridgePlayer = player;
+			
 			//default
 			type = PanelType.Action;
 			menuOpt = new List<string>();
 			menuOpt.Add("Attack");
 			menuOpt.Add("Bag");
-			menuOpt.Add("Escape");
 		}
 
 		public override void FillOptionContent()
@@ -61,12 +62,7 @@ namespace Game_VSmode_verTest
 					break;
 				case ConsoleKey.Enter:
 					ResetOutputStyle();
-					SkillPanel temp_skill = new SkillPanel("S k i l l " , new Pos(options[pointer].startPos.x , startPos.y + 5) , new Size(11 , 10));
-					controller.OpenPanel(temp_skill);
-					while (temp_skill.OperateOption() == -1) ;
-					controller.CloseCurPanel();
-					Fight.actionInfo = pointer;
-					return pointer;
+					return OptionFunc();
 				case ConsoleKey.Escape:
 					ResetOutputStyle();
 					controller.CloseCurPanel();
@@ -80,12 +76,21 @@ namespace Game_VSmode_verTest
 			switch (pointer)
 			{
 				case 0:
-					SkillPanel temp_skill=new SkillPanel("S k i l l " , new Pos(options[pointer].startPos.x , startPos.y + 5) , new Size(11 , 10));
+					SkillPanel temp_skill = new SkillPanel("S k i l l " , new Pos(options[pointer].startPos.x + 10 , startPos.y) , new Size(6 , 10) , bridgePlayer);
 					controller.OpenPanel(temp_skill);
 					while (temp_skill.OperateOption() == -1) ;
 					controller.CloseCurPanel();
-					return temp_skill.OperateOption();
+					Fight.actionInfo = pointer;
+					return pointer;
+				case 1:
+					SkillPanel temp_bag = new SkillPanel("B a g " , new Pos(options[pointer].startPos.x + 10 , startPos.y) , new Size(8 , 10) , bridgePlayer);
+					controller.OpenPanel(temp_bag);
+					while (temp_bag.OperateOption() == -1) ;
+					controller.CloseCurPanel();
+					Fight.actionInfo = pointer;
+					return pointer;
 			}
+
 			return -1;
 		}
 	}

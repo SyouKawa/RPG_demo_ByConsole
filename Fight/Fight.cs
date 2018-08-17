@@ -9,8 +9,8 @@ namespace Game_VSmode_verTest
 	class Fight
 	{
 		//Inter-Data
-		public List<Character> playerTeam=new List<Character>();
-		public Character hostile = new Character();
+		public List<Player> playerTeam=new List<Player>();
+		public Player hostile = new Player();
 		//public ActionRes actionRes;
 		public List<string> Log;
 		//Control
@@ -19,7 +19,7 @@ namespace Game_VSmode_verTest
 		public FightPanel fightPanel;//init in FightPanel
 
 		public Fight() {}
-		public Fight(Character _hostile,List<Character> _playerTeam)
+		public Fight(Player _hostile ,List<Player> _playerTeam)
 		{
 			hostile = _hostile;
 			playerTeam = _playerTeam;
@@ -46,27 +46,40 @@ namespace Game_VSmode_verTest
 				if (isYourTurn)
 				{
 					//Get 3-Args to release Skill or Item.
+					Console.BackgroundColor = ConsoleColor.Black;
+					fightPanel.logPanel.DrawFrame();
+					fightPanel.logPanel.DisplayLog();
 					while (chrInfo == -1)
 					{
 						chrInfo = DisplayController.Instance.ControlCurPanel();
 					}
-					int skillID = playerTeam[chrInfo].ownSkillID[attackInfo];
 
+					//Settlement
+					int skillID = playerTeam[chrInfo].ownSkillID[attackInfo];
 					if (actionInfo == 0)
 					{
-						playerTeam[chrInfo].Attack(skillID);
-						hostile.BeHit(skillID);
+						Skill SettleTempskill = playerTeam[chrInfo].Attack(skillID);
+						GlobalSkillsManager.Instance.AddSpecialEffectPositive(SettleTempskill.skillID , playerTeam , hostile);
+						fightPanel.logPanel.AddLog("我试试看中文的分割会不会出现BUG，中英文混杂也Hello不知道会怎么样");
+						fightPanel.logPanel.DisplayLog();
+						hostile.BeHit(SettleTempskill);
+						GlobalSkillsManager.Instance.AddSpecialEffectPassive(SettleTempskill.skillID , playerTeam , hostile);
+						fightPanel.logPanel.AddLog("this is a log.");
+						fightPanel.logPanel.DisplayLog();
 					}
 					if (actionInfo == 1)
 					{
-						playerTeam[chrInfo].UseItem(skillID);
-						hostile.BeHit(skillID);
+						//playerTeam[chrInfo].UseItem(skillID);
+						//hostile.BeHit(skillID);
+						
+						//TODO Display the descrp of Item
 					}
-					if (actionInfo == 2)
-					{
-						//TODO- Escape.
-					}
-					isYourTurn = false;
+					//TestCode
+					//isYourTurn = false;
+					//reset
+					actionInfo = -1;
+					attackInfo = -1;
+					chrInfo = -1;
 				}
 				else
 				{

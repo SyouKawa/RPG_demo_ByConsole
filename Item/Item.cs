@@ -8,14 +8,13 @@ namespace Game_VSmode_verTest{
     class Item {
         public string name;
         public string description;
-        public ItemType type;
         public int maxHold;
         public int curHold;
 
-        public Item(string _name,string _description,ItemType _type,int _maxHold,int _curHold){
+		public Item(){}
+		public Item(string _name,string _description,int _maxHold,int _curHold){
             name=_name;
             description=_description;
-            type=_type;
             maxHold=_maxHold;
             curHold=_curHold;
         }

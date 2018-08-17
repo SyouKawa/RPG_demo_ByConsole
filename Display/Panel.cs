@@ -25,7 +25,7 @@ namespace Game_VSmode_verTest{
 			//Default
 			type = PanelType.Null;
 			options = new List<OptionObject>();
-			pointer = 1;
+			pointer = 0;
 			isHorizon = false;
 			isTop = true;
 

@@ -11,11 +11,11 @@ namespace Game_VSmode_verTest{
         public List<Skill> skills;//OSC
         public string configPath;
 
-        public SkillPanel(string _title, Pos _startPos , Size _size)
+        public SkillPanel(string _title, Pos _startPos , Size _size,Player player)
         :base(_title,_startPos , _size)
 		{
             type=PanelType.Skill;
-            InitSkillList();
+            InitSkillList(player);
         }
 
 		public override void UpdateOptions()
@@ -76,19 +76,13 @@ namespace Game_VSmode_verTest{
 			return -1;
 		}
 
-		//public override int OptionFunc()
-		//{
-		//	switch (pointer)
-		//	{
-		//		case 0:
-		//			return pointer;
-					
-		//	}
-		//	return -1;
-		//}
-		public void InitSkillList(){
-            configPath=Environment.CurrentDirectory+"\\Config\\Skill_config.json";
-            skills=new List<Skill>(LoadController.Instance.GetSkillsConfig(configPath)as List<Skill>);
+		public void InitSkillList(Player player){
+			//configPath=Environment.CurrentDirectory+"\\Config\\Skill_config.json";
+			skills = new List<Skill>();
+			foreach (int id in player.ownSkillID)
+			{
+				skills.Add(GlobalSkillsManager.Instance.GetSkill(id));
+			}
         }
     }
 }

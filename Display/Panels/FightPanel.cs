@@ -9,32 +9,34 @@ namespace Game_VSmode_verTest{
 
 		//List<Character> chrs;//OSC
 		string MonsterPic; //string MonsterPic;
+		public LogPanel logPanel;
+
 		public Fight fightscene;
 
 		#region InitPart
-		public FightPanel(string _title , Pos _startPos , Size _size)
+		public FightPanel(string _title , Pos _startPos , Size _size,Fight fight)
 		: base(_title , _startPos , _size)
 		{
 			type=PanelType.Fight;
-            //InitCharacterList();
 			isHorizon = true;
+			fightscene = fight;
 
-			//default
-			fightscene = new Fight();
-			InitCharacterList();
-			fightscene.hostile = new Monster();
+			//fightsceneSetVaule outside
+			//InitCharacterList();
+			//fightscene.hostile = new Player();
 			fightscene.fightPanel = this;
+			logPanel = new LogPanel("L o g " , new Pos(startPos.x + 60 , startPos.y + 2) , new Size(14 , 26));
 
-			controller.OpenPanel(this);
+			//controller.OpenPanel(this);
 		}
 
-		public void InitCharacterList()
-		{
-			Player p1 = new Player();
-			fightscene.playerTeam.Add(p1);
-			fightscene.playerTeam.Add(p1);
-			fightscene.playerTeam.Add(p1);
-		}
+		//TestCode
+		//public void InitCharacterList()
+		//{
+		//	Player p1 = new Player();
+		//	fightscene.playerTeam.Add(p1);
+		//	fightscene.playerTeam.Add(new Player(2));
+		//}
 		#endregion
 
 		#region Override DrawPart
@@ -60,10 +62,11 @@ namespace Game_VSmode_verTest{
 				}
 				else
 				{
-					tempOption.startPos = new Pos(startPos.x + 2 + 2+ tempOption.size.widthCol * i , startPos.y + 1);
+					tempOption.startPos = new Pos(startPos.x + 2 + 2+ tempOption.size.widthCol * i , startPos.y + 13);
 				}
 				options.Add(tempOption);
 			}
+
 		}
 		#endregion
 
@@ -86,10 +89,11 @@ namespace Game_VSmode_verTest{
 					if (pointer >= options.Count - 1) ;
 					else pointer++;
 					UpdateOptions();
+					ResetOutputStyle();
 					break;
 				case ConsoleKey.Enter:
 					ResetOutputStyle();
-					ActionPanel temp_actionPanel = new ActionPanel("A c t i o n " , new Pos(this.options[pointer].startPos.x , this.startPos.y + 5) , new Size(6 , 5));
+					ActionPanel temp_actionPanel = new ActionPanel("A c t i o n " , new Pos(options[pointer].startPos.x , options[pointer].startPos.y + 5) , new Size(6 , 4),fightscene.playerTeam[pointer]);
 					controller.OpenPanel(temp_actionPanel);
 					while (temp_actionPanel.OperateOption() == -1) ;
 					Fight.chrInfo = pointer;

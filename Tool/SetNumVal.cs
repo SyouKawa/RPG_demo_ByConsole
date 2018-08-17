@@ -10,13 +10,10 @@
                     ChangeNumByChecked(ref chr.anger_value,"+",settleSkill.acc_opposite_anger,chr.Max_Limit["anger_value"]);
                 break;
                 case OperateType.AddFearValue:
-                   ChangeNumByChecked(ref chr.fear_value,"+",settleSkill.acc_opposite_fear,chr.Max_Limit["fatigue_value"]); 
+                   ChangeNumByChecked(ref chr.fear_value,"+",settleSkill.acc_opposite_fear,chr.Max_Limit["fear_value"]); 
                 break;
                 case OperateType.CostMP:
                     ChangeNumByChecked(ref chr.MP,"-",settleSkill.cost,chr.Max_Limit["MP"]);
-                break;
-                case OperateType.AddFatigueValue:
-                    ChangeNumByChecked(ref chr.fatigue_value,"+",settleSkill.cost,chr.Max_Limit["fatigue_value"]);
                 break;
             }
         }

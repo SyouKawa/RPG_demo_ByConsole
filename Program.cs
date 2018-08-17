@@ -10,16 +10,25 @@ namespace Game_VSmode_verTest
 		static void Main(string[] args){
             Console.CursorVisible = false;
 			Console.OutputEncoding = Encoding.UTF8;
-			//Test-Code
-			//FightPanel fightPanel = new FightPanel("F i g h t " , new Pos(4 , 4) , new Size(30 , 30));
+
+			//Test - SerializeJson
+			LoadManager.SerializeJsonTemplate();
+
+			//Test FightDisplay and Spawn a Round
+			//Fight testFight = new Fight();
+			//{
+			//	testFight.playerTeam.Add(new Player());
+			//	testFight.playerTeam.Add(new Player(1));
+			//	testFight.playerTeam.Add(new Player(1));
+			//}
+			//FightPanel fightPanel = new FightPanel("F i g h t " , new Pos(4 , 4) , new Size(45 , 30) , testFight);
 			MapPanel map = new MapPanel("M a p " , new Pos(0 , 0) , new Size(30 , 30));
 			while (true)
 			{
 				switch (DisplayController.Instance.panels.Peek().type)
 				{
 					case PanelType.Map:
-						map.InitBlockList();
-						map.UpdateOptions();
+						map.ControlCheck();
 						break;
 					case PanelType.Fight:
 							((FightPanel)(DisplayController.Instance.panels.Peek())).fightscene.RoundBattle();

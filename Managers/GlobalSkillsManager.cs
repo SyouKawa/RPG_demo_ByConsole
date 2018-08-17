@@ -33,9 +33,40 @@ namespace Game_VSmode_verTest{
         }    
         //TODO-Add,Del,Find,Change for Character.
         public Skill GetSkill(int skillID){
-            if(skillsDict.ContainsKey(skillID)) return skillsDict[skillID];
+			if (skillsDict.ContainsKey(skillID))
+			{
+				//DON'T change Prototype
+				return new Skill(skillsDict[skillID]);
+			} 
             else return null;
         }
-    }
+
+		public void AddSpecialEffectPositive(int skillID , List<Player> team , Player monster)
+		{//for Attack
+			switch (skillID)
+			{
+				case 1001:
+
+					break;
+				case 1002:
+
+					break;
+			}
+		}
+
+		public void AddSpecialEffectPassive(int skillID , List<Player> team , Player monster)
+		{//for OnHit
+			switch (skillID)
+			{
+				case 1001:
+
+					break;
+				case 1002:
+
+					break;
+			}
+		}
+
+	}
 
 }
