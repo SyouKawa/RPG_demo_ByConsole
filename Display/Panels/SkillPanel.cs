@@ -67,7 +67,7 @@ namespace Game_VSmode_verTest{
 					break;
 				case ConsoleKey.Escape:
 					controller.CloseCurPanel();
-					break;
+					return -2;
 				case ConsoleKey.Enter:
 					controller.CloseCurPanel();
 					Fight.attackInfo = pointer;

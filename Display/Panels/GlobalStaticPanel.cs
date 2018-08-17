@@ -28,7 +28,7 @@ namespace Game_VSmode_verTest
 		public void CreateMenuPanel()
 		{
 			title = "M e n u ";
-			startPos = new Pos(20 , 20);
+			startPos = new Pos(10 , 10);
 			size = new Size(6 , 5);
 			options = new List<OptionObject>();
 

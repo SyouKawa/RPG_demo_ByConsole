@@ -29,7 +29,7 @@ namespace Game_VSmode_verTest
 
 			//default add NPCs(Block)
 
-			controller.OpenPanel(this);
+			//controller.OpenPanel(this);
 		}
 
 		public override void FillOptionContent()
@@ -104,11 +104,21 @@ namespace Game_VSmode_verTest
 					controller.OpenPanel(new FightPanel("F i g h t " , new Pos(0 , 0) , new Size(45 , 30) , curFight));
 				}
 			}
+			if (map[index].type==BlockType.NPC)
+			{
+				ConsoleKey cur_key = Console.ReadKey(true).Key;
+				if (cur_key == ConsoleKey.Enter)
+				{
+					//Create a MessagePanel with current Player-info
+					DescripPanel Info= new DescripPanel("I n f o " , new Pos(10 , 10) , new Size( 10, 4),map[index].npc.name+"加入了队伍");
+					controller.OpenPanel(Info);
+				}
+			}
 		}
 
-		public void ControlCheck()
+		public override int OperateOption()
 		{
-			if (!isTop) return;
+			if (!isTop) return-1;
 			ConsoleKey cur_key = Console.ReadKey(true).Key;
 			switch (cur_key)
 			{
@@ -155,10 +165,15 @@ namespace Game_VSmode_verTest
 				case ConsoleKey.D:
 					Pos posD = new Pos(chrBlock[pointer].pos.x + 2 , chrBlock[pointer].pos.y);
 					CheckBlock(posD);
-					Console.SetCursorPosition(80 , 3);
-					Console.Write(chrBlock[pointer].pos.x.ToString() + "," + chrBlock[pointer].pos.y.ToString() + "  ");
+					//Console.SetCursorPosition(80 , 3);
+					//Console.Write(chrBlock[pointer].pos.x.ToString() + "," + chrBlock[pointer].pos.y.ToString() + "  ");
+					break;
+				case ConsoleKey.Escape:
+					ResetOutputStyle();
+					controller.OpenPanel(new GlobalStaticPanel(PanelType.Menu));
 					break;
 			}
+			return -1;
 		}
 	}
 }

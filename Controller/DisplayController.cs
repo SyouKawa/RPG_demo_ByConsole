@@ -53,6 +53,11 @@ namespace Game_VSmode_verTest
 		public void CloseCurPanel()
 		{
 			PopPanel();
+			RefreshAllPanel();
+		}
+
+		public void RefreshAllPanel()
+		{
 			Console.Clear();
 			Console.BackgroundColor = ConsoleColor.Black;
 			//reverse Draw order,prevent cover.
@@ -60,23 +65,20 @@ namespace Game_VSmode_verTest
 			tempStack.Reverse();
 			foreach (Panel p in tempStack)
 			{
+				Console.BackgroundColor = ConsoleColor.Black;
 				p.Draw();
 			}
+		}
+
+		public void OnlyDrawTopPanel()
+		{
+			panels.Peek().Draw();
 		}
 
 		public int ControlCurPanel()
 		{
 			return panels.Peek().OperateOption();
 		}
-
-		//public void DrawDescrpPanel(DescripPanel panel)
-		//{
-		//	DrawPanelFrame(panel);
-		//	//TO-DO wait a return to display
-		//	Console.SetCursorPosition(panel.startX + 2 , panel.startY + 2);
-		//	Console.Write(panel.content);
-		//}
-
 
 	}
 }

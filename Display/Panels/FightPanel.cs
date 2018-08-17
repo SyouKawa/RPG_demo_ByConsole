@@ -12,6 +12,7 @@ namespace Game_VSmode_verTest{
 		public LogPanel logPanel;
 
 		public Fight fightscene;
+		public bool quitFight;
 
 		#region InitPart
 		public FightPanel(string _title , Pos _startPos , Size _size,Fight fight)
@@ -21,22 +22,10 @@ namespace Game_VSmode_verTest{
 			isHorizon = true;
 			fightscene = fight;
 
-			//fightsceneSetVaule outside
-			//InitCharacterList();
-			//fightscene.hostile = new Player();
 			fightscene.fightPanel = this;
 			logPanel = new LogPanel("L o g " , new Pos(startPos.x + 60 , startPos.y + 2) , new Size(14 , 26));
 
-			//controller.OpenPanel(this);
 		}
-
-		//TestCode
-		//public void InitCharacterList()
-		//{
-		//	Player p1 = new Player();
-		//	fightscene.playerTeam.Add(p1);
-		//	fightscene.playerTeam.Add(new Player(2));
-		//}
 		#endregion
 
 		#region Override DrawPart
@@ -95,14 +84,26 @@ namespace Game_VSmode_verTest{
 					ResetOutputStyle();
 					ActionPanel temp_actionPanel = new ActionPanel("A c t i o n " , new Pos(options[pointer].startPos.x , options[pointer].startPos.y + 5) , new Size(6 , 4),fightscene.playerTeam[pointer]);
 					controller.OpenPanel(temp_actionPanel);
-					while (temp_actionPanel.OperateOption() == -1) ;
+
+					int pushPanelRes = temp_actionPanel.OperateOption();
+					while (pushPanelRes == -1)//still choosing options
+					{
+						pushPanelRes = temp_actionPanel.OperateOption();
+					}
+					if (pushPanelRes == -2)//closed pushPanel
+					{
+						return -1;
+					}
+					//else controller.CloseCurPanel();
+
 					Fight.chrInfo = pointer;
 					return pointer;
-					//break;
 				case ConsoleKey.Escape:
-					ResetOutputStyle();
-					controller.OpenPanel(new GlobalStaticPanel(PanelType.Menu));
+					controller.CloseCurPanel();
+					fightscene = null;
+					Console.BackgroundColor = ConsoleColor.Black;
 					break;
+					//return -2;
 			}
 			return -1;
 		}

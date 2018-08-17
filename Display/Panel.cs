@@ -52,6 +52,7 @@ namespace Game_VSmode_verTest{
 
 		public void Draw()
 		{
+			Console.BackgroundColor = ConsoleColor.Black;
 			DrawFrame();
 			FillOptionContent();//core
 			UpdateOptions();

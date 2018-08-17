@@ -114,33 +114,43 @@ namespace Game_VSmode_verTest {
 				for (int j=0;j<curLine.Length;j++)
 				{
 					Pos pos = new Pos((j*2+2) , i+1);// RowCol->X,Y
+					Block tempCreateBlock = new Block();
 					switch (curLine[j])
 					{
 						case '■':
-							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Wall));
+							tempCreateBlock = new Block(pos , curLine[j] , BlockType.Wall);
+							mapBlocks.Add(tempCreateBlock);
 							break;
 						case '★':
-							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Door));
+							tempCreateBlock = new Block(pos , curLine[j] , BlockType.Door);
+							mapBlocks.Add(tempCreateBlock);
 							break;
 						case '▲':
-							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Box));
+							tempCreateBlock = new Block(pos , curLine[j] , BlockType.Box);
+							mapBlocks.Add(tempCreateBlock);
 							break;
 						case '　':
-							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Null));
+							tempCreateBlock = new Block(pos , curLine[j] , BlockType.Null);
+							mapBlocks.Add(tempCreateBlock);
 							break;
 						case '□':
-							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Door));
+							tempCreateBlock = new Block(pos , curLine[j] , BlockType.Door);
+							mapBlocks.Add(tempCreateBlock);
 							break;
 						case '\n':
-							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Turn));
+							tempCreateBlock = new Block(pos , curLine[j] , BlockType.Turn);
+							mapBlocks.Add(tempCreateBlock);
 							break;
 						case '⊙':
-							mapBlocks.Add(new Block(pos , curLine[j] , BlockType.Monster));
+							tempCreateBlock=new Block(pos , curLine[j] , BlockType.Monster);
+							mapBlocks.Add(tempCreateBlock);
 							break;
 					}
-					if (curLine[j] > 'ァ' && curLine[j] < 'ヶ')
+					if (curLine[j] >= 'ァ' && curLine[j] <= 'ヶ')
 					{
-						mapBlocks.Add(new Block(pos , curLine[j] , BlockType.NPC));
+						tempCreateBlock = new Block(pos , curLine[j] , BlockType.NPC);
+						mapBlocks.Add(tempCreateBlock);
+						tempCreateBlock.npc = new Player();
 					}
 				}
 			}

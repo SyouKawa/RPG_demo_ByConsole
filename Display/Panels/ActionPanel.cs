@@ -62,11 +62,18 @@ namespace Game_VSmode_verTest
 					break;
 				case ConsoleKey.Enter:
 					ResetOutputStyle();
-					return OptionFunc();
+					if (OptionFunc() == -2)//only close pushedPanel.
+					{
+						return -1;//keep this loop
+					}
+					else
+					{
+						return pointer;
+					}
 				case ConsoleKey.Escape:
 					ResetOutputStyle();
 					controller.CloseCurPanel();
-					break;
+					return -2;
 			}
 			return -1;
 		}
@@ -78,15 +85,30 @@ namespace Game_VSmode_verTest
 				case 0:
 					SkillPanel temp_skill = new SkillPanel("S k i l l " , new Pos(options[pointer].startPos.x + 10 , startPos.y) , new Size(6 , 10) , bridgePlayer);
 					controller.OpenPanel(temp_skill);
-					while (temp_skill.OperateOption() == -1) ;
-					controller.CloseCurPanel();
+
+					int pushPanelRes = temp_skill.OperateOption();
+					while (pushPanelRes == -1)//still choosing options
+					{
+						pushPanelRes = temp_skill.OperateOption();
+					}
+					if (pushPanelRes == -2) return -2;//closed pushPanel
+					else controller.CloseCurPanel();
+
 					Fight.actionInfo = pointer;
 					return pointer;
 				case 1:
 					SkillPanel temp_bag = new SkillPanel("B a g " , new Pos(options[pointer].startPos.x + 10 , startPos.y) , new Size(8 , 10) , bridgePlayer);
 					controller.OpenPanel(temp_bag);
-					while (temp_bag.OperateOption() == -1) ;
-					controller.CloseCurPanel();
+
+					pushPanelRes = temp_bag.OperateOption();
+					while (pushPanelRes == -1)//still choosing options
+					{
+						pushPanelRes = temp_bag.OperateOption();
+					}
+					if (pushPanelRes == -2) return -2;//closed pushPanel and stay here
+					else controller.CloseCurPanel();
+					//controller.CloseCurPanel();
+
 					Fight.actionInfo = pointer;
 					return pointer;
 			}

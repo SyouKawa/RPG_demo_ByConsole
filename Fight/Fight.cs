@@ -60,7 +60,7 @@ namespace Game_VSmode_verTest
 					{
 						Skill SettleTempskill = playerTeam[chrInfo].Attack(skillID);
 						GlobalSkillsManager.Instance.AddSpecialEffectPositive(SettleTempskill.skillID , playerTeam , hostile);
-						fightPanel.logPanel.AddLog("我试试看中文的分割会不会出现BUG，中英文混杂也Hello不知道会怎么样");
+						fightPanel.logPanel.AddLog(SettleTempskill.descrp+'('+ SettleTempskill.info+')');
 						fightPanel.logPanel.DisplayLog();
 						hostile.BeHit(SettleTempskill);
 						GlobalSkillsManager.Instance.AddSpecialEffectPassive(SettleTempskill.skillID , playerTeam , hostile);

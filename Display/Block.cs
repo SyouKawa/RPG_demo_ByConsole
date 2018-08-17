@@ -13,7 +13,7 @@ namespace Game_VSmode_verTest
 		public BlockType type;
 
 		//opt-values
-		public Character chr;
+		public Player npc;
 		public Box box;
 		public Item item;
 
