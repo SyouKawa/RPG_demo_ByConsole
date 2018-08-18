@@ -19,8 +19,12 @@ namespace Game_VSmode_verTest{
 
 		public override void UpdateOptions()
 		{
-			Console.SetCursorPosition(startPos.x + 2 , startPos.y + 2);
-			Console.Write(content);
+			string[] str=content.Split('\n');
+			for (int i=0;i<str.Length;i++)
+			{
+				Console.SetCursorPosition(startPos.x + 2 , startPos.y + 2+i);
+				Console.Write(str[i]);
+			}
 		}
 
 		public override int OperateOption()
@@ -30,9 +34,9 @@ namespace Game_VSmode_verTest{
 			if (cur_key == ConsoleKey.Enter || cur_key == ConsoleKey.Escape||cur_key==ConsoleKey.Spacebar)
 			{
 				controller.CloseCurPanel();
-				return 0;
+				return -1;
 			}
-			return 0;
+			return -1;
 		}
 	}
 }

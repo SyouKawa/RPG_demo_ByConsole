@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Game_VSmode_verTest{
     class GlobalSkillsManager {
-        
-        private static GlobalSkillsManager _instance;
+
+		#region DefaultUsing
+		private static GlobalSkillsManager _instance;
         public static GlobalSkillsManager Instance{
             get{
                 if(_instance==null) _instance=new GlobalSkillsManager(Environment.CurrentDirectory+"\\Config\\Skill_config.json");
@@ -27,7 +28,9 @@ namespace Game_VSmode_verTest{
                 skillsDict.Add(temp.skillID,temp);
             }
         }
-        public void InitGlobalSkillManager(string _configPath){
+		#endregion
+
+		public void InitGlobalSkillManager(string _configPath){
             configPath=_configPath;
             allSkills=new List<Skill>(LoadController.Instance.GetSkillsConfig(configPath));
         }    
@@ -41,7 +44,7 @@ namespace Game_VSmode_verTest{
             else return null;
         }
 
-		public void AddSpecialEffectPositive(int skillID , List<Player> team , Player monster)
+		public void AddSpecialEffectPositive(int skillID , List<Player> team , Player monster,LogPanel log)
 		{//for Attack
 			switch (skillID)
 			{
@@ -54,7 +57,7 @@ namespace Game_VSmode_verTest{
 			}
 		}
 
-		public void AddSpecialEffectPassive(int skillID , List<Player> team , Player monster)
+		public void AddSpecialEffectPassive(int skillID , List<Player> team , Player monster,LogPanel log)
 		{//for OnHit
 			switch (skillID)
 			{

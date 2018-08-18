@@ -62,6 +62,14 @@ namespace Game_VSmode_verTest
 				int j;
 				for (j=0; j<=curAddLine ; j++)
 				{
+					if (i % 2 == 0)
+					{
+						Console.ForegroundColor = ConsoleColor.DarkBlue;
+					}
+					else
+					{
+						Console.ForegroundColor = ConsoleColor.DarkGreen;
+					}
 					Console.SetCursorPosition(startPos.x +2, startPos.y+1+curLoopLine);
 					Console.Write(showLog[j]);
 					allOutput++;
@@ -69,6 +77,7 @@ namespace Game_VSmode_verTest
 				}
 			}
 			curLoopLine = 0;
+			ResetOutputStyle();
 		}
 	}
 }

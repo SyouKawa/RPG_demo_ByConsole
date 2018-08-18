@@ -25,7 +25,10 @@ namespace Game_VSmode_verTest{
 		public string info;
 
 		#region Constructure
-		public Skill(){}
+		public Skill()
+		{
+
+		}
         public Skill(Skill temp){
             skillID=temp.skillID;
             skill_name = temp.skill_name;

@@ -83,7 +83,7 @@ namespace Game_VSmode_verTest
 			switch (pointer)
 			{
 				case 0:
-					SkillPanel temp_skill = new SkillPanel("S k i l l " , new Pos(options[pointer].startPos.x + 10 , startPos.y) , new Size(6 , 10) , bridgePlayer);
+					SkillPanel temp_skill = new SkillPanel("S k i l l " , new Pos(options[pointer].startPos.x + 10 , startPos.y) , new Size(6 , 8) , bridgePlayer);
 					controller.OpenPanel(temp_skill);
 
 					int pushPanelRes = temp_skill.OperateOption();
@@ -97,7 +97,7 @@ namespace Game_VSmode_verTest
 					Fight.actionInfo = pointer;
 					return pointer;
 				case 1:
-					SkillPanel temp_bag = new SkillPanel("B a g " , new Pos(options[pointer].startPos.x + 10 , startPos.y) , new Size(8 , 10) , bridgePlayer);
+					BagPanel temp_bag = new BagPanel("B a g " , new Pos(options[pointer].startPos.x + 10 , startPos.y) , new Size(8 , 8) , bridgePlayer);
 					controller.OpenPanel(temp_bag);
 
 					pushPanelRes = temp_bag.OperateOption();
@@ -110,7 +110,8 @@ namespace Game_VSmode_verTest
 					//controller.CloseCurPanel();
 
 					Fight.actionInfo = pointer;
-					return pointer;
+					return -1;
+					//return pointer;
 			}
 
 			return -1;

@@ -14,16 +14,42 @@ namespace Game_VSmode_verTest{
                 return _instance;
             }
         }
+		Random random = new Random();
+
 
 		//Json-Data
         public List<Skill> GetSkillsConfig(string path){
             return new LoadManager().GetSkillsConfig(path);
         }
 
+		public List<Player> GetNPCsConfig(string path)
+		{
+			return new LoadManager().GetNPCsConfig(path);
+		}
+
+		public List<Player> GetMonsterConfig(string path)
+		{
+			return new LoadManager().GetMonsterConfig(path);
+		}
+
 		//TxT-Data
 		public List<Block> LoadMapData(string path)
 		{
 			return new LoadManager().LoadMapData(path);
+		}
+
+		public Player RollMonster()
+		{
+			int range = NPCManager.Instance.allMonster.Count;
+			int index = random.Next(2 , range);
+			return NPCManager.Instance.allMonster[index];
+		}
+
+		public Player RollNPC()
+		{
+			int range = NPCManager.Instance.allNPCs.Count;
+			int index = random.Next(2 , range);
+			return NPCManager.Instance.allNPCs[index];
 		}
 
 	}

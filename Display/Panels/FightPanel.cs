@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,11 +40,12 @@ namespace Game_VSmode_verTest{
 
 		public override void FillOptionContent()
 		{
+			options.Clear();
 			for (int i=0;i< fightscene.playerTeam.Count ;i++ )
 			{
 				OptionObject tempOption = new OptionObject();
 				tempOption.index = i;
-				tempOption.content= fightscene.playerTeam[i].GetChrData();
+				tempOption.content= fightscene.playerTeam[i].GetChrDataTeam();//Problem not happened here.
 				tempOption.size = new Size(13 , 11);
 				if (!isHorizon)
 				{
@@ -51,7 +53,7 @@ namespace Game_VSmode_verTest{
 				}
 				else
 				{
-					tempOption.startPos = new Pos(startPos.x + 2 + 2+ tempOption.size.widthCol * i , startPos.y + 13);
+					tempOption.startPos = new Pos(startPos.x + 2 + 2+ tempOption.size.widthCol * i , startPos.y + 15);
 				}
 				options.Add(tempOption);
 			}
@@ -62,6 +64,19 @@ namespace Game_VSmode_verTest{
 		{
 			base.Draw();
 			logPanel.Draw();
+
+			//Update Monster Info
+			Console.SetCursorPosition(startPos.x + 40 , startPos.y + 2);
+			fightscene.hostile.PrintDataHostile();
+			Random random = new Random();
+			string[] pics = { "\\Config\\Monsters\\BufferGirl.txt" , "\\Config\\Monsters\\1.txt" , "\\Config\\Monsters\\2.txt" , "\\Config\\Monsters\\3.txt" , "\\Config\\Monsters\\4.txt" };
+			int picIndex = random.Next(0 , pics.Length);
+			string[] monster = File.ReadAllLines(Environment.CurrentDirectory+ pics[picIndex]);
+			for (int i = 0 ; i <monster.Length;i++)
+			{
+				Console.SetCursorPosition(startPos.x + 4 , startPos.y+1 + i);
+				Console.Write(monster[i]);
+			}
 		}
 		#endregion
 
@@ -106,7 +121,7 @@ namespace Game_VSmode_verTest{
 					return pointer;
 				case ConsoleKey.Escape:
 					controller.CloseCurPanel();
-					fightscene = null;
+					//fightscene = null;
 					Console.BackgroundColor = ConsoleColor.Black;
 					break;
 					//return -2;

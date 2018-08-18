@@ -42,7 +42,8 @@
 		Action,
 		Menu,
         Fight,
-        Descrp
+        Descrp,
+		Team
     }
     enum ItemType{
         Null,

@@ -11,6 +11,7 @@ namespace Game_VSmode_verTest
 		public List<Block> map;//replace OptionObject to Block
 		public List<Block> chrBlock;
 		public List<Block> npcSaveData;
+		public int index;
 		public Dictionary<int , List<Block>> teamDict;//int ->pointer.
 		public string configPath;
 		public bool isRuning;//prevent running-update refreshed by txt
@@ -96,7 +97,7 @@ namespace Game_VSmode_verTest
 
 		public void CheckBlock(Pos nextPos)
 		{
-			int index = (nextPos.y - 1) * 10 + (nextPos.x-2) / 2;
+			index = (nextPos.y - 1) * 10 + (nextPos.x-2) / 2;
 			//kinds of Block Check and effect.
 			if (map[index].style == '　'&& map[index].type!=BlockType.Player)
 			{
@@ -115,6 +116,17 @@ namespace Game_VSmode_verTest
 			{
 				//controller.OpenPanel()
 			}
+			if (map[index].style == '¤')
+			{
+				ConsoleKey cur_key = Console.ReadKey(true).Key;
+				if (cur_key == ConsoleKey.Enter)
+				{
+					controller.OpenPanel(new DescripPanel("I n f o " , new Pos(10 , 10) , new Size(10 , 4) , "获得了物品" + map[index].item.name));
+					chrBlock[pointer].npc.bag.Add(map[index].item);
+				}
+				map[index].style = '　';
+				map[index].type = BlockType.Null;
+			}
 			if (map[index].style == '⊙')
 			{
 				ConsoleKey cur_key = Console.ReadKey(true).Key;
@@ -123,8 +135,13 @@ namespace Game_VSmode_verTest
 					//Create a FightPanel with current Player-info
 					Fight curFight = new Fight();
 					{
-						curFight.playerTeam.Add(new Player());
-						curFight.playerTeam.Add(new Player(1));//TODO NPC in team.
+						//init Team
+						foreach (Block curBlock in teamDict[pointer])
+						{
+							curFight.playerTeam.Add(curBlock.npc);
+						}
+						//init Monster
+						curFight.hostile = map[index].npc;//default test
 					}
 					controller.OpenPanel(new FightPanel("F i g h t " , new Pos(0 , 0) , new Size(45 , 30) , curFight));
 				}

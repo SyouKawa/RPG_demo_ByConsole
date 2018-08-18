@@ -13,15 +13,21 @@ namespace Game_VSmode_verTest
 
 			//Test - SerializeJson
 			//LoadManager.SerializeJsonTemplate();
+			//LoadManager.SerializeNPCJsonTemplate();
 
 			DisplayController.Instance.OpenPanel(new MapPanel("M a p " , new Pos(0 , 0) , new Size(30 , 30)));
 			while (true)
 			{
 				DisplayController.Instance.ControlCurPanel();
-				if (DisplayController.Instance.panels.Peek().type == PanelType.Fight)
+				if (DisplayController.Instance.panels.Peek().type == PanelType.Fight|| DisplayController.Instance.panels.Peek().type == PanelType.Descrp)
 				{
-					FightPanel curFight = (FightPanel)(DisplayController.Instance.panels.Peek());
-					curFight.fightscene.RoundBattle();
+					if (DisplayController.Instance.panels.Peek().type == PanelType.Fight)
+					{
+						FightPanel curFight = (FightPanel)(DisplayController.Instance.panels.Peek());
+						curFight.fightscene.RoundBattle();
+					}
+					
+					//check RoundBattle Result
 				}
 			}
         }

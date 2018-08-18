@@ -10,7 +10,8 @@ class Character {
         //Require input to Init
         public string name = "";
         public List<int> ownSkillID=new List<int>();
-        public Career career = Career.INIT;
+		public List<Item> bag = new List<Item>();
+        //public Career career = Career.INIT;
 
         public int HP = 100;
         public int MP = 100;//merge with Fatigue
@@ -19,14 +20,15 @@ class Character {
         public int fear_value = 0;
         public Dictionary<string,int>Max_Limit=new Dictionary<string, int>();//TO-DO Json init
         public List<Buff>buffs=new List<Buff>();
-		int[] Property;
+		public int[] Property=new int[4] { 1,1,1,1};
 
 		public Skill settleTempSkill;
         public bool isDead = false;
         public Random random=new Random();
 
         public Character(){
-            Max_Limit.Add("HP",200);
+			//default
+			Max_Limit.Add("HP",200);
             Max_Limit.Add("MP",200);
             Max_Limit.Add("anger_value",100);
             Max_Limit.Add("fear_value",150);//de-buff could control
@@ -34,7 +36,7 @@ class Character {
         }
 
         public virtual bool Get_isDead(){
-            if(0==HP){ 
+            if(HP<=0){ 
                 isDead=true;
                 return isDead;
             }else{ 
@@ -46,7 +48,13 @@ class Character {
         public virtual Skill Attack(int skillID){
             GetSettleSkillPrototype(skillID);
             SkillSettlement(settleTempSkill);
-            if(!GetSkillRCC(settleTempSkill))return null;
+			string RCCres = GetSkillRCC(settleTempSkill);
+			if (RCCres[0] == '0')
+			{
+				Skill fail = new Skill();
+				fail.skill_name = RCCres;
+				return fail;
+			}
             UpdateFightDataPositive(settleTempSkill);
 			return settleTempSkill;
 		}
@@ -65,8 +73,48 @@ class Character {
             settleTempSkill=GlobalSkillsManager.Instance.GetSkill(skillID);
         }
         
-        public virtual bool GetSkillRCC(Skill newskill){
-            return true;
+        public virtual string GetSkillRCC(Skill newskill){
+			//1.cost
+			//2.condition
+			
+			//1.1 MP
+			if (MP - newskill.cost<0) return "0|MP不足";
+			//1.2 or 2.1 Item
+			foreach (Item req in newskill.requireItems)
+			{
+				bool existItem = false;
+				//= bag.Contains(req);
+				foreach (Item exist in bag)
+				{
+					if (exist.name == req.name)
+					{
+						existItem = true;
+						break;
+					}
+				}
+				if (existItem == false) return "0|背包中没有"+req.name;
+				//minus count -> after really true.
+			}
+			//2.2 propety limit check
+			for(int i=0 ;i < Property.Length ;i++)
+			{
+				if (Property[i] - newskill.propertyRL[i] < 0)
+				{
+					string res="0|";
+					switch (i)
+					{
+						case 0:
+							return res + "力量属性不满足释放条件";
+						case 1:
+							return res + "智慧属性不满足释放条件";
+						case 2:
+							return res + "神圣属性不满足释放条件";
+						case 3:
+							return res + "洞察属性不满足释放条件";
+					}
+				}
+			}
+			return "1";
         }
 
         public virtual void UpdateFightDataPositive(Skill settleSkill){
@@ -120,7 +168,7 @@ class Character {
 			return temp_ref;
 		}
 
-		public virtual void PrintData()
+		public virtual void PrintDataTeam()
 		{
 			int posX = Console.CursorLeft;
 			int posY = Console.CursorTop;
@@ -130,17 +178,30 @@ class Character {
 			Console.SetCursorPosition(posX, posY+2);
 			Console.WriteLine("MP:" + ConvertNum2Pic(70));
 			Console.SetCursorPosition(posX , posY + 3);
-			Console.WriteLine(career.ToString());
+			Console.WriteLine("Armor: " + Armor);
 
 		}
 
-		public virtual List<string> GetChrData()
+		public virtual void PrintDataHostile()
+		{
+			int posX = Console.CursorLeft;
+			int posY = Console.CursorTop;
+			Console.WriteLine(name);
+			Console.SetCursorPosition(posX , posY + 1);
+			Console.WriteLine("HP:" + ConvertNum2Pic(HP));
+			Console.SetCursorPosition(posX , posY + 2);
+			Console.WriteLine("Fear:" + ConvertNum2Pic(fear_value));
+			Console.SetCursorPosition(posX , posY + 3);
+			Console.WriteLine("Anger:" + ConvertNum2Pic(anger_value));
+		}
+
+		public virtual List<string> GetChrDataTeam()
 		{
 			List<string> list = new List<string>();
 			list.Add(name+"\n");
-			list.Add("HP:" + ConvertNum2Pic(90)+"\n");
-			list.Add("MP:" + ConvertNum2Pic(70)+"\n");
-			list.Add(career.ToString()+"\n");
+			list.Add("HP:" + ConvertNum2Pic(HP)+"\n");
+			list.Add("MP:" + ConvertNum2Pic(MP)+"\n");
+			list.Add("Armor: "+Armor+"\n");
 
 			return list;
 		}

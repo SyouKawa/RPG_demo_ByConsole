@@ -31,7 +31,7 @@ namespace Game_VSmode_verTest
 			type = block.type;
 
 			//DONT use ref ,use new(TODO)
-			npc = new Player();
+			npc = block.npc;
 			item = block.item;
 			box = block.box;
 		}

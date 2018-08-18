@@ -9,11 +9,11 @@ namespace Game_VSmode_verTest{
 		//GrowTree growTree;
 		//Equipment equipment;
 		//int exp;
-		public List<Item> items;
+		//public List<Item> items;
 
 		public Player(){
             name = "魔术师";
-            career = Career.UNEMPLOYED;
+            //career = Career.UNEMPLOYED;
             ownSkillID.Add(1001);
             ownSkillID.Add(1002);
             ownSkillID.Add(1003);
@@ -23,12 +23,23 @@ namespace Game_VSmode_verTest{
 		public Player(int a)
 		{
 			name = "钟表匠";
-			career = Career.UNEMPLOYED;
+			//career = Career.UNEMPLOYED;
 			ownSkillID.Add(1005);
 			ownSkillID.Add(1006);
 			ownSkillID.Add(1007);
 			ownSkillID.Add(1008);
 
+		}
+
+		public Player(string _name,int _HP,int _MP,int _Armor,List<int> _ownSkillID,List<Item> _bag,int[] _Property)
+		{
+			name = _name;
+			HP = _HP;
+			MP = _MP;
+			Armor = _Armor;
+			ownSkillID = _ownSkillID;
+			bag = _bag;
+			Property = _Property;
 		}
 
 		private void GetDropItems(Character chr){

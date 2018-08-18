@@ -25,7 +25,7 @@ namespace Game_VSmode_verTest {
         }
 
 		#region Spawn a Template Json-Skill
-		public static void SerializeJsonTemplate()
+		public static void SerializeSkillJsonTemplate()
 		{
 			//prepare for string(in Json)
 			Skill template = new Skill();
@@ -50,6 +50,29 @@ namespace Game_VSmode_verTest {
 			file.Write(bytesdata , 0 , bytesdata.Length);
 			file.Close();
 		}
+
+		public static void SerializeNPCJsonTemplate()
+		{
+			Player template = new Player();
+			//Default
+			template.name = "name";
+			template.HP = 100;
+			template.MP = 100;
+			template.Armor = 0;
+
+			//Custom
+			template.ownSkillID = new List<int>() { 1000 , 1000 };
+			template.bag = new List<Item>() {new Item(),new Item()};
+			//RL
+			template.Property = new int[4] { 0,0,0,0};
+			//template.buffs = new List<Buff>();
+			string jsondata = JsonMapper.ToJson(template);
+			FileStream file = new FileStream(Environment.CurrentDirectory + "\\NPCTemplate.json" , FileMode.Create);
+			byte[] bytesdata = Encoding.UTF8.GetBytes(jsondata);
+			file.Write(bytesdata , 0 , bytesdata.Length);
+			file.Close();
+			//return new Player(_name ,_HP ,_MP ,_Armor , List<int> _ownSkillID , List < Item > _bag , int[] _Property);
+		}
 		#endregion
 
 		#region Different Data Decode-Implement in detail
@@ -64,7 +87,36 @@ namespace Game_VSmode_verTest {
             return temp_skill_list_ref;
         }
 
-        public Skill DecodeSimpleSkill(JsonData skill_config_data)
+		public List<Player> GetNPCsConfig(string path)
+		{
+			LoadConfigData(path);
+			List<Player> NPCsList = new List<Player>();
+			for (int i = 0 ; i < data.Count ; i++)
+			{
+				Player simpleNPC = DecodeSimpleNPC(data[i]);
+				NPCsList.Add(simpleNPC);
+			}
+			return NPCsList;
+		}
+
+		public List<Player> GetMonsterConfig(string path)
+		{
+			LoadConfigData(path);
+			List<Player> MonstersList = new List<Player>();
+			for (int i = 0 ; i < data.Count ; i++)
+			{
+				Player simpleNPC = DecodeSimpleNPC(data[i]);
+				MonstersList.Add(simpleNPC);
+			}
+			return MonstersList;
+		}
+
+		public Player DecodeSimpleNPC(JsonData npcData)
+		{
+			return JsonMapper.ToObject<Player>(npcData.ToJson());
+		}
+
+		public Skill DecodeSimpleSkill(JsonData skill_config_data)
 		{
             int _skillID = (int)skill_config_data["skillID"];
             string _skill_name = skill_config_data["skill_name"].ToString();
@@ -144,6 +196,12 @@ namespace Game_VSmode_verTest {
 						case '⊙':
 							tempCreateBlock=new Block(pos , curLine[j] , BlockType.Monster);
 							mapBlocks.Add(tempCreateBlock);
+							tempCreateBlock.npc = LoadController.Instance.RollMonster();//return a monster
+							break;
+						case '¤':
+							tempCreateBlock = new Block(pos , curLine[j] , BlockType.Item);
+							mapBlocks.Add(tempCreateBlock);
+							tempCreateBlock.item = new Item();
 							break;
 					}
 					if (curLine[j] >= 'ァ' && curLine[j] <= 'ヶ')
@@ -151,7 +209,7 @@ namespace Game_VSmode_verTest {
 						tempCreateBlock = new Block(pos , curLine[j] , BlockType.NPC);
 						mapBlocks.Add(tempCreateBlock);
 						//TODO Roll a NPC from Manager.
-						tempCreateBlock.npc = new Player();
+						tempCreateBlock.npc = LoadController.Instance.RollNPC();//return a NPC
 					}
 				}
 			}

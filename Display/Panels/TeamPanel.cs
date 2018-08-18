@@ -16,6 +16,7 @@ namespace Game_VSmode_verTest
 			map = _map;
 
 			//default
+			type = PanelType.Team;
 			isHorizon = true;
 		}
 
@@ -26,7 +27,7 @@ namespace Game_VSmode_verTest
 			{
 				OptionObject tempOption = new OptionObject();
 				tempOption.index = i;
-				tempOption.content = map.teamDict[map.pointer][i].npc.GetChrData();
+				tempOption.content = map.teamDict[map.pointer][i].npc.GetChrDataTeam();
 				tempOption.size = new Size(13 , 6);
 				if (!isHorizon)
 				{
