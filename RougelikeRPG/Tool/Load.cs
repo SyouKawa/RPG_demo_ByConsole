@@ -22,7 +22,6 @@ namespace RougelikeRPG.Tool
 			Player
 		}
 
-		//DataDecode Factory
 		public static List<T> GetConfigFromFile<T>() {//NOT re-write at present
 			Type temp = typeof(T);
 			string path = Environment.CurrentDirectory + "\\"+temp.Name+"s.json";
@@ -46,10 +45,10 @@ namespace RougelikeRPG.Tool
 
 		#region Spawn and Add a Json-Data into File
 
-		public static void AddSerializeJsonGameObject(Object obj,ObjectMode mode)
+		public static void AddSerializeJsonGameObject<T>(T obj)
 		{
 			string jsonData = "";
-			string path = mode.ToString()+"s.json";
+			string path = typeof(T).Name +"s.json";
 			path = Environment.CurrentDirectory + "\\" + path;
 
 			if (File.Exists(path))//文件存在，在末尾添加新的Json实例
@@ -57,18 +56,8 @@ namespace RougelikeRPG.Tool
 				FileStream file = new FileStream(path , FileMode.Open);
 				file.Seek(-1 , SeekOrigin.End);
 
-				switch (mode)
-				{
-					case ObjectMode.Item:
-						Item item = obj as Item;
-						jsonData = JsonMapper.ToJson(item);
-						break;
-					case ObjectMode.Skill:
-						break;
-					case ObjectMode.NPC:
-						break;
-				}
-				jsonData = ",\n" + jsonData + "]";
+				jsonData = ",\n" + JsonMapper.ToJson(obj) + "]";
+
 				byte[] byteData = Encoding.UTF8.GetBytes(jsonData);
 				file.Write(byteData , 0 , byteData.Length);
 
@@ -78,19 +67,11 @@ namespace RougelikeRPG.Tool
 			else//文件不存在，创建新文件并写入Json字典
 			{
 				FileStream file = new FileStream(path , FileMode.Create);
-				switch (mode)
-				{
-					case ObjectMode.Item:
-						List<Item> dataList = new List<Item>();
-						Item item = obj as Item;
-						dataList.Add(item);
-						jsonData = JsonMapper.ToJson(dataList);
-						break;
-					case ObjectMode.Skill:
-						break;
-					case ObjectMode.NPC:
-						break;
-				}
+
+				List<T> dataList = new List<T>();
+				dataList.Add(obj);
+				jsonData = JsonMapper.ToJson(dataList);
+
 				byte[] byteData = Encoding.UTF8.GetBytes(jsonData);
 				file.Write(byteData , 0 , byteData.Length);
 

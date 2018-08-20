@@ -14,7 +14,7 @@ namespace RougelikeRPG
 		static void Main(string[] args)
 		{
 			Item item = new Item("name","descrp",'◆',1,1);
-			Load.AddSerializeJsonGameObject(item,Load.ObjectMode.Item);
+			Load.AddSerializeJsonGameObject<Item>(item);
 
 			List<Item> test= Load.GetConfigFromFile<Item>();
 			foreach (var temp in test)
@@ -22,5 +22,6 @@ namespace RougelikeRPG
 				Console.WriteLine();
 			}
 		}
+
 	}
 }
