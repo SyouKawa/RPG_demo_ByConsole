@@ -1,0 +1,6 @@
+*.csproj
+bin/
+Data/
+obj/
+*.config
+*.sln
